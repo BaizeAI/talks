@@ -72,7 +72,7 @@ glowSeed: 205
 <div flex>
   <div
     v-click="1" flex flex-col items-center transition duration-500 ease-in-out
-    :class="$clicks < 1 ? 'translate-x--20 opacity-0' : 'translate-x-0 opacity-100'"
+    :class="$clicks < 1 ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'"
   >
     <img src="/person/peter.png" w-50 h-50 rounded-full object-cover mb-5>
     <span font-semibold text-3xl >Peter Pan</span>
@@ -88,7 +88,7 @@ glowSeed: 205
   <div flex-1 />
   <div
     v-click="2" flex flex-col items-center transition duration-500 ease-in-out
-    :class="$clicks < 2 ? 'translate-x--20 opacity-0' : 'translate-x-0 opacity-100'"
+    :class="$clicks < 2 ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'"
   >
     <img src="/person/kebe.jpeg" w-50 h-50 rounded-full object-cover mb-5>
     <span font-semibold text-3xl>Kebe Liu</span>
@@ -104,7 +104,7 @@ glowSeed: 205
   <div flex-1 />
   <div
     v-click="3" flex flex-col items-center transition duration-500 ease-in-out
-    :class="$clicks < 3 ? 'translate-x-20 opacity-0' : 'translate-x-0 opacity-100'"
+    :class="$clicks < 3 ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'"
   >
     <img src="/person/neko.jpeg" w-50 h-50 rounded-full object-cover mb-5>
     <span font-semibold text-3xl>Fanshi Zhang</span>
