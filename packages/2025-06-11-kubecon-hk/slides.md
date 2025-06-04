@@ -71,32 +71,48 @@ glowSeed: 205
 
 <div flex>
   <div
-    v-click="1" flex flex-col items-start transition duration-500 ease-in-out
+    v-click="1" flex flex-col items-center transition duration-500 ease-in-out
     :class="$clicks < 1 ? 'translate-x--20 opacity-0' : 'translate-x-0 opacity-100'"
+  >
+    <img src="/person/peter.png" w-50 h-50 rounded-full object-cover mb-5>
+    <span font-semibold text-3xl >Peter Pan</span>
+    <div items-center>
+      <div>
+        <span class="opacity-70">Software Engineering VP</span>
+      </div>
+      <div text-sm flex items-center justify-center gap-2 mt-4>
+        <div i-ri:github-fill /><span underline decoration-dashed font-mono decoration-zinc-300>panpan0000</span>
+      </div>
+    </div>
+  </div>
+  <div flex-1 />
+  <div
+    v-click="2" flex flex-col items-center transition duration-500 ease-in-out
+    :class="$clicks < 2 ? 'translate-x--20 opacity-0' : 'translate-x-0 opacity-100'"
   >
     <img src="/person/kebe.jpeg" w-50 h-50 rounded-full object-cover mb-5>
     <span font-semibold text-3xl>Kebe Liu</span>
-    <div>
+    <div items-center>
       <div>
         <span class="opacity-70">Senior software engineer</span>
       </div>
-      <div text-sm flex items-center gap-2 mt-4>
+      <div text-sm flex items-center justify-center gap-2 mt-4>
         <div i-ri:github-fill /><span underline decoration-dashed font-mono decoration-zinc-300>kebe7jun</span>
       </div>
     </div>
   </div>
   <div flex-1 />
   <div
-    v-click="2" flex flex-col items-end transition duration-500 ease-in-out
-    :class="$clicks < 2 ? 'translate-x-20 opacity-0' : 'translate-x-0 opacity-100'"
+    v-click="3" flex flex-col items-center transition duration-500 ease-in-out
+    :class="$clicks < 3 ? 'translate-x-20 opacity-0' : 'translate-x-0 opacity-100'"
   >
     <img src="/person/neko.jpeg" w-50 h-50 rounded-full object-cover mb-5>
     <span font-semibold text-3xl>Fanshi Zhang</span>
-    <div flex-col items-end>
+    <div flex-col items-center>
       <div>
         <span class="opacity-70">Senior software engineer</span>
       </div>
-      <div text-sm flex items-center justify-end gap-2 mt-4>
+      <div text-sm flex items-center justify-center gap-2 mt-4>
         <div i-ri:github-fill /><span underline decoration-dashed font-mono decoration-zinc-300>nekomeowww</span>
       </div>
     </div>
