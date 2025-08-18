@@ -40,9 +40,9 @@ class: px-35
 glowSeed: 205
 ---
 
-# Challenges Across LLM Lifecycle
+# What's wrong with AI?
 
-<span>From environment setup to production deployment</span>
+<span><div v-click>Seriously..</div></span>
 
 <div mt-6 />
 
@@ -54,26 +54,18 @@ glowSeed: 205
   <div flex items-center bg="white/10" backdrop-blur px-3 py-2 rounded-md>
     <div i-carbon:warning-alt text-amber-300 text-sm mr-2 />
     <div font-semibold>
-      Dependency Hell
+      Trust Issue
     </div>
   </div>
   <div px-4 py-3>
     <div flex flex-col gap-3>
       <div>
-        <div text-sm font-medium>Dependency install overhead</div>
-        <div text-xs opacity-70>Python/NodeJS install fails frequently with long waiting</div>
+        <div text-sm font-medium>Privacy Policy</div>
+        <div text-xs opacity-70>ChatGPT, Gemini, Claude, will learn from your input</div>
       </div>
       <div>
-        <div text-sm font-medium>CUDA version drift</div>
-        <div text-xs opacity-70>Incompatible versions across environments</div>
-      </div>
-      <div>
-        <div text-sm font-medium>Dependency Lifecycle consistency</div>
-        <div text-xs opacity-70>From development to training to inference</div>
-      </div>
-      <div>
-        <div text-sm font-medium>Tool fragmentation</div>
-        <div text-xs opacity-70>pip / uv / conda / nix / pixi</div>
+        <div text-sm font-medium>Novelty & Ownership</div>
+        <div text-xs opacity-70>Do we own the input (code) ? </div>
       </div>
     </div>
   </div>
@@ -81,20 +73,20 @@ glowSeed: 205
 
 <div border="2 solid white/5" rounded-lg overflow-hidden bg="white/5" backdrop-blur-sm h-full>
   <div flex items-center bg="white/10" backdrop-blur px-3 py-2 rounded-md>
-    <div i-carbon:download text-blue-300 text-sm mr-2 />
+    <div i-carbon:warning-alt text-amber-300 text-sm mr-2 />
     <div font-semibold>
-      Data Preparation
+      Miss Understanding
     </div>
   </div>
   <div px-4 py-3>
     <div flex flex-col gap-3>
       <div>
-        <div text-sm font-medium>Unattended dataset/model preparation</div>
-        <div text-xs opacity-70>Time-consuming & error-prone processes</div>
+        <div text-sm font-medium>Lack of Context</div>
+        <div text-xs opacity-70>It doesn't understand the whole project</div>
       </div>
       <div>
-        <div text-sm font-medium>Disparate sources</div>
-        <div text-xs opacity-70>HuggingFace / S3 / NFS / Web</div>
+        <div text-sm font-medium>Creativity effected</div>
+        <div text-xs opacity-70>Ideas flow gets effected causing frustration</div>
       </div>
     </div>
   </div>
@@ -102,20 +94,16 @@ glowSeed: 205
 
 <div border="2 solid white/5" rounded-lg overflow-hidden bg="white/5" backdrop-blur-sm h-full>
   <div flex items-center bg="white/10" backdrop-blur px-3 py-2 rounded-md>
-    <div i-carbon:data-check text-green-300 text-sm mr-2 />
+    <div i-carbon:warning-alt text-amber-300 text-sm mr-2 />
     <div font-semibold>
-      Data Governance
+      Actions
     </div>
   </div>
   <div px-4 py-3>
     <div flex flex-col gap-3>
       <div>
-        <div text-sm font-medium>Sharing artifacts</div>
-        <div text-xs opacity-70>Across teams and Kubernetes namespaces</div>
-      </div>
-      <div>
-        <div text-sm font-medium>Version control & Reproducibility</div>
-        <div text-xs opacity-70>Tracking model & environment versions</div>
+        <div text-sm font-medium>It Just Talks</div>
+        <div text-xs opacity-70>Can't access your enviroment</div>
       </div>
     </div>
   </div>
@@ -131,7 +119,7 @@ glowSeed: 205
     rounded-lg px-6 py-3 flex items-center gap-3
   >
     <div i-carbon:idea text-yellow-300 text-2xl />
-    <span text-lg>LLM projects face unique infrastructure challenges beyond traditional ML</span>
+    <span text-lg>How to overcome all this?</span>
   </div>
 </div>
 
