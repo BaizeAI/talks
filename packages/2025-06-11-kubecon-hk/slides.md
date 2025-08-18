@@ -20,109 +20,24 @@ routerMode: hash
 <div translate-x--14>
 
 <h1>
-  Taming Dependency Chaos for LLM in K8S
+  Better Artificial Intelligence 
 </h1>
 
-DaoCloud Fanshi Zhang, Kebe Liu, Peter Pan
+Abdullah Alamin, Mobile Developer/AI, Solution Delivery
 
 </div>
 
 <div w-full absolute bottom-0 left-0 flex items-center transform="translate-x--10 translate-y--10">
   <div w-full flex items-center justify-end gap-4>
-    <img src="/KubeCon.svg" h-20 translate-y-4>
+    <img src="/mImages/tasheer_white_logo.svg" h-13 translate-y-4>
   </div>
 </div>
 
----
-layout: intro
-class: px-24
-glowSeed: 205
----
-
-<div flex items-center justify-center>
-  <div
-    v-click flex flex-col gap-2 items-center justify-center transition duration-500 ease-in-out
-    :class="$clicks < 1 ? 'translate-x--20 opacity-0' : 'translate-x-0 opacity-100'"
-  >
-    <div flex items-center gap-6>
-      <img src="/DaoCloud.svg" h-40 />
-    </div>
-  </div>
-  <div
-    v-after pl-15 pr-15 transition duration-500 ease-in-out
-    :class="$clicks < 1 ? 'scale-80' : 'scale-100'"
-  >
-    <div i-carbon:close text-8xl />
-  </div>
-  <div
-    v-after flex flex-col gap-2 items-center justify-center transition duration-500 ease-in-out
-    :class="$clicks < 1 ? 'translate-x-20 opacity-0' : 'translate-x-0 opacity-100'"
-  >
-    <div flex items-center gap-6>
-      <div i-devicon:kubernetes inline-block text-6xl /> <span text-4xl text="[#5791f7]">Kubernetes</span>
-    </div>
-  </div>
-</div>
 
 ---
 layout: intro
 class: px-35
 glowSeed: 205
----
-
-<div flex>
-  <div
-    v-click="1" flex flex-col items-center transition duration-500 ease-in-out
-    :class="$clicks < 1 ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'"
-  >
-    <img src="/person/peter.png" w-50 h-50 rounded-full object-cover mb-5>
-    <span font-semibold text-3xl >Peter Pan</span>
-    <div items-center>
-      <div>
-        <span class="opacity-70">Software Engineering VP</span>
-      </div>
-      <div text-sm flex items-center justify-center gap-2 mt-4>
-        <div i-ri:github-fill /><span underline decoration-dashed font-mono decoration-zinc-300>panpan0000</span>
-      </div>
-    </div>
-  </div>
-  <div flex-1 />
-  <div
-    v-click="2" flex flex-col items-center transition duration-500 ease-in-out
-    :class="$clicks < 2 ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'"
-  >
-    <img src="/person/kebe.jpeg" w-50 h-50 rounded-full object-cover mb-5>
-    <span font-semibold text-3xl>Kebe Liu</span>
-    <div items-center>
-      <div>
-        <span class="opacity-70">Senior software engineer</span>
-      </div>
-      <div text-sm flex items-center justify-center gap-2 mt-4>
-        <div i-ri:github-fill /><span underline decoration-dashed font-mono decoration-zinc-300>kebe7jun</span>
-      </div>
-    </div>
-  </div>
-  <div flex-1 />
-  <div
-    v-click="3" flex flex-col items-center transition duration-500 ease-in-out
-    :class="$clicks < 3 ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'"
-  >
-    <img src="/person/neko.jpeg" w-50 h-50 rounded-full object-cover mb-5>
-    <span font-semibold text-3xl>Fanshi Zhang</span>
-    <div flex-col items-center>
-      <div>
-        <span class="opacity-70">Senior software engineer</span>
-      </div>
-      <div text-sm flex items-center justify-center gap-2 mt-4>
-        <div i-ri:github-fill /><span underline decoration-dashed font-mono decoration-zinc-300>nekomeowww</span>
-      </div>
-    </div>
-  </div>
-</div>
-
----
-class: py-10
-glowSeed: 100
 ---
 
 # Challenges Across LLM Lifecycle
