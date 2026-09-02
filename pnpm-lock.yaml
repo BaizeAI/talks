@@ -177,6 +177,48 @@ importers:
         specifier: ^1.52.0
         version: 1.52.0
 
+  packages/2026-09-09-kubecon-cn:
+    devDependencies:
+      '@iconify-json/bi':
+        specifier: ^1.2.4
+        version: 1.2.4
+      '@iconify-json/carbon':
+        specifier: ^1.2.8
+        version: 1.2.8
+      '@iconify-json/devicon':
+        specifier: ^1.2.24
+        version: 1.2.24
+      '@iconify-json/fluent':
+        specifier: ^1.2.22
+        version: 1.2.22
+      '@iconify-json/icon-park-outline':
+        specifier: ^1.2.2
+        version: 1.2.2
+      '@iconify-json/logos':
+        specifier: ^1.2.4
+        version: 1.2.4
+      '@iconify-json/ph':
+        specifier: ^1.2.2
+        version: 1.2.2
+      '@iconify-json/ri':
+        specifier: ^1.2.5
+        version: 1.2.5
+      '@iconify-json/simple-icons':
+        specifier: ^1.2.36
+        version: 1.2.36
+      '@iconify-json/svg-spinners':
+        specifier: ^1.2.2
+        version: 1.2.2
+      '@iconify-json/twemoji':
+        specifier: ^1.2.2
+        version: 1.2.2
+      '@iconify/utils':
+        specifier: ^2.3.0
+        version: 2.3.0
+      playwright-chromium:
+        specifier: ^1.52.0
+        version: 1.52.0
+
   packages/talks: {}
 
 packages:
