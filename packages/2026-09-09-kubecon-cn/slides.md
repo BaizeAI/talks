@@ -66,7 +66,7 @@ footer: false
 
 <div flex items-start justify-center gap-24>
   <div flex flex-col items-center>
-    <img src="/ppt-align/nicole.png" w-44 h-44 rounded-full object-cover mb-5>
+    <img src="/person/nicole.jpg" w-44 h-44 rounded-full object-cover mb-5>
     <span font-semibold text-3xl>Nicole Li</span>
     <div text-center mt-2>
       <div op-70>Inference Acceleration Team, DaoCloud</div>
@@ -76,7 +76,7 @@ footer: false
     </div>
   </div>
   <div flex flex-col items-center>
-    <img src="/ppt-align/kebe.png" w-44 h-44 rounded-full object-cover mb-5>
+    <img src="/person/kebe.jpeg" w-44 h-44 rounded-full object-cover mb-5>
     <span font-semibold text-3xl>Kebe Liu</span>
     <div text-center mt-2>
       <div op-70>Senior Software Engineer, DaoCloud</div>
@@ -123,7 +123,7 @@ layout: default
 glowSeed: 88
 ---
 
-# It's 11 AM. TTFT P95 Just Went Red.
+# At 11 AM, TTFT P95 Went Red
 
 <div text-lg op-70 mt-1 mb-4>A familiar scene in every LLM inference team</div>
 
@@ -139,8 +139,7 @@ glowSeed: 88
       <div class="alert-r"><span>threshold</span><b>&gt; 800 ms</b></div>
       <div class="alert-r hot"><span>peak P95</span><b>41.1 min</b></div>
       <div class="alert-r hot"><span>peak P99</span><b>42.3 min</b></div>
-      <div class="alert-r"><span>topology</span><b>PD disaggregated</b></div>
-      <div class="alert-r"><span>window</span><b>~11:00 – 13:05</b></div>
+      <div class="alert-r"><span>window</span><b>11:00 – 13:05</b></div>
     </div>
   </div>
 
@@ -226,29 +225,30 @@ glowSeed: 142
 
 # Dashboards Everywhere. Answers Nowhere.
 
-<div text-lg op-70 mt-1 mb-5>The question everyone asks, and no single panel answers</div>
+<div text-lg op-70 mt-1 mb-4>Every panel is correct in isolation; none provides a first move</div>
 
-<div class="maze-layout">
-  <div class="maze-shot">
-    <img src="/ppt-align/dashboard-overview.png" alt="Production dashboards spread across the request path">
-    <span>Every panel is correct in isolation</span>
-  </div>
+<div flex gap-7 items-center>
 
-  <div class="maze-question">
-    <div class="q-box">
-      <div class="q-h">What broke?</div>
-      <div class="q-list">
-        <div class="q-i"><span>?</span>Gateway &nbsp;·&nbsp; Prefill</div>
-        <div class="q-i"><span>?</span>KV usage &nbsp;·&nbsp; KV transfer</div>
-        <div class="q-i"><span>?</span>GPU &nbsp;·&nbsp; Network</div>
-        <div class="q-i hot"><span>!</span>Or is TTFT just lying to us?</div>
-      </div>
+<div style="flex: 0.82">
+  <div class="q-box">
+    <div class="q-h">What broke?</div>
+    <div class="q-list">
+      <div class="q-i"><span>?</span>Gateway &nbsp;·&nbsp; Prefill</div>
+      <div class="q-i"><span>?</span>KV usage &nbsp;·&nbsp; KV transfer</div>
+      <div class="q-i"><span>?</span>GPU &nbsp;·&nbsp; Network</div>
+      <div class="q-i hot"><span>!</span>Or is TTFT just lying to us?</div>
     </div>
-    <img src="/ppt-align/dashboard-maze.png" alt="Operator lost in a maze of dashboards">
   </div>
 </div>
 
-<div class="maze-close"><b>Dashboards everywhere.</b> Answers nowhere — until the request path gives us a first move.</div>
+<div style="flex: 1.18">
+  <img src="/shots/sprawl-real.png" class="shot">
+  <div text-center text-sm op-55 mt-3 style="line-height: 1.5">
+    Dashboards everywhere. Answers nowhere.<br><b>The request path must give us a first move.</b>
+  </div>
+</div>
+
+</div>
 
 <style>
 .q-box {
@@ -316,11 +316,9 @@ glowSeed: 210
 
 # Why TTFT Lies: The PD-Disaggregated Lifecycle
 
-<div text-lg op-70 mt-1 mb-5>TTFT is a sum. Any term can blow up — and the sum never says which.</div>
+<div text-lg op-70 mt-1 mb-2>TTFT is a sum. Any term can blow up — and the sum never says which.</div>
 
-<div class="pd-figure">
-  <img src="/ppt-align/pd-lifecycle.png" alt="PD-disaggregated request lifecycle from gateway to decode">
-</div>
+<img src="/shots/pd-lifecycle.png" class="illus" style="max-height: 208px; object-fit: contain">
 
 <div class="eq">
   <span class="eq-l">TTFT</span>
@@ -331,14 +329,14 @@ glowSeed: 210
   <span class="eq-t">first Decode token</span>
 </div>
 
-<div flex gap-5 mt-5>
+<div flex gap-5 mt-3>
   <div class="why-c">
     <div class="why-h"><div i-carbon:warning style="color: #ffa35f" />KV Transfer is new</div>
-    <div class="why-d">In a monolithic engine this term does not exist. PD disaggregation adds a boundary that <b>neither side owns alone</b> — a cache miss, a slow peer, or a wrong network path all land here.</div>
+    <div class="why-d">In a monolithic engine this term does not exist. PD disaggregation adds a boundary that <b>neither side owns alone</b>.</div>
   </div>
   <div class="why-c">
     <div class="why-h"><div i-carbon:chart-line style="color: #b0ddff" />The sum hides the terms</div>
-    <div class="why-d">Every layer is measured, but each measures <b>its own span</b>. Nobody measures the gaps between them — and the gaps are where the minutes go.</div>
+    <div class="why-d">Each layer measures <b>its own span</b>. Nobody measures the gaps between them — and the gaps are where the minutes go.</div>
   </div>
 </div>
 
@@ -380,7 +378,7 @@ glowSeed: 210
   background: #ffffff07;
 }
 .why-h { display: flex; align-items: center; gap: 7px; font-size: 15.5px; font-weight: 600; margin-bottom: 6px; }
-.why-d { font-size: 13px; line-height: 1.6; opacity: 0.85; }
+.why-d { font-size: 12.5px; line-height: 1.55; opacity: 0.85; }
 </style>
 
 <!--
@@ -406,7 +404,7 @@ layout: default
 glowSeed: 268
 ---
 
-# The Request Path Narrowed It in Four Reads
+# Four Reads Narrowed the Request Path
 
 <div text-lg op-70 mt-1 mb-4>Same incident. Walk the path instead of staring at the tail.</div>
 
@@ -592,283 +590,81 @@ glowSeed: 175
 
 ---
 layout: default
-glowSeed: 96
----
-
-# V1 — Locally Correct. No First Move.
-
-<div text-lg op-70 mt-1 mb-5>Every panel was right. None of them was the first one to open.</div>
-
-<div class="v1-map">
-  <span class="v1-label">V1</span>
-  <div class="v1-stack">
-    <div class="v1-line">
-      <div v-for="p in ['Business Gateway Metrics','vLLM Engine','Decode Throughput','KV Cache Stats','GPU Utilization']" :key="p" class="v1-panel">{{ p }}</div>
-    </div>
-    <div class="v1-line lower">
-      <div v-for="p in ['PD Router Metrics','Prefill Timing','Batch Scheduler','Network Latency','Error Rates']" :key="p" class="v1-panel">{{ p }}</div>
-    </div>
-  </div>
-</div>
-
-<div class="v2-row">
-  <span class="v2-label">V2</span>
-  <div class="v2-shot">
-    <img src="/ppt-align/dashboard-sprawl.png" alt="Production dashboard folders grouped by component">
-  </div>
-  <div class="v2-copy">
-    <b>Dashboard Sprawl Anti-Pattern in Production</b>
-    <span>Every folder is useful. None tells an on-call engineer which one to open first.</span>
-  </div>
-</div>
-
-<div class="v1-quote">More telemetry. Still no fixed first move.</div>
-
-<style>
-.v1-map {
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 8px;
-  align-items: center;
-}
-.v1-label, .v2-label { font-size: 18px; font-weight: 800; color: #ff7e63; }
-.v1-stack { display: flex; flex-direction: column; gap: 0; min-width: 0; }
-.v1-line { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-.v1-line.lower { width: 90%; margin-inline: auto; }
-.v1-panel {
-  min-height: 54px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 7px 9px;
-  text-align: center;
-  border: 1px solid #ffffff1a;
-  border-radius: 8px;
-  background: #b0ddff14;
-  font-size: 11.5px;
-  font-weight: 600;
-  line-height: 1.25;
-}
-.v1-panel:nth-of-type(3n) { background: #d9b8ff17; }
-.v1-panel:nth-of-type(4n) { background: #2ee59d13; }
-.v2-row { display: grid; grid-template-columns: 48px 310px 1fr; gap: 12px; align-items: center; margin-top: 13px; }
-.v2-label { color: #4ec9f5; }
-.v2-shot { height: 132px; padding: 7px 10px; border-radius: 9px; background: #fff; }
-.v2-shot img { width: 100%; height: 100%; object-fit: contain; }
-.v2-copy { display: flex; flex-direction: column; gap: 6px; }
-.v2-copy b { font-size: 20px; }
-.v2-copy span { font-size: 13px; line-height: 1.55; opacity: 0.67; }
-.v1-quote {
-  margin-top: 13px;
-  padding: 10px 16px;
-  border-left: 3px solid #2ee59d;
-  background: #2ee59d0a;
-  font-size: 15px;
-  font-weight: 600;
-  color: #d6ffee;
-  line-height: 1.45;
-  text-align: center;
-}
-</style>
-
-<!--
-【5:15 – 6:05】
-
-先承认一件事：我们不是没有可观测性，**我们有太多了**。
-
-十二块面板，每块都有团队负责，每块都是对的。
-
-**每一块都「局部正确」，但没有一块是「第一块该打开的」。** 端到端的请求路径，不在任何人的视图里。
-
-黄色这句话是我们那段时间的写照：**更多的遥测数据，依然没有固定的第一步。**
-
-〔语气是「我们和你们一样」，不是自嘲 —— 这是绝大多数团队的真实状态〕
-
-所以我们改了两次。
--->
-
----
-layout: default
 glowSeed: 148
 ---
 
-<h1 class="iter-title">Three Iterations: From Component Views to Action Path</h1>
+# From Dashboard Sprawl to an Action Path
 
-<div text-lg op-70 mt-1 mb-5>We did not delete telemetry. We layered the decision path on top of it.</div>
+<div text-lg op-70 mt-1 mb-3>Keep the telemetry. Change the decision path.</div>
 
-<div class="iter-align">
-  <div class="iter-copy">
-    <div class="iter-step"><b>V1 · Component dashboards</b><span>Each layer was locally correct; the end-to-end path was missing.</span></div>
-    <div class="iter-step"><b>V2 · PD request path</b><span>Gateway → Prefill → KV handoff → Decode. We could finally say <em>where</em>.</span></div>
-    <div class="iter-step hot"><b>V3 · Action path</b><span>Entry signals → proof → candidate action → validation.</span></div>
+<img src="/shots/action-path.png" class="illus" style="max-height: 224px; object-fit: contain">
+
+<div flex gap-4 mt-4>
+  <div class="iv">
+    <div class="iv-t">V1 · Component views</div>
+    <div class="iv-d">Each layer was <b>locally correct</b>; the end-to-end request path was missing.</div>
   </div>
-  <div class="iter-source">
-    <img src="/ppt-align/iteration-evolution.png" alt="Evolution from component dashboards to role-based observability">
+  <div class="iv">
+    <div class="iv-t">V2 · PD request path</div>
+    <div class="iv-d">Gateway → P → KV handoff → D. We could finally say <b>where</b> — but not what to do.</div>
+  </div>
+  <div class="iv hot">
+    <div class="iv-t">V3 · Action path</div>
+    <div class="iv-d"><b>Signal → proof → one reversible action</b>, with a validation gate at the end.</div>
   </div>
 </div>
 
-<div class="iter-foot"><div i-carbon:idea style="color: #ffc217; flex: none; margin-top: 3px" /><div>We did not delete telemetry. We layered the decision path on top of it.</div></div>
+<div class="iv-foot">
+  <div i-carbon:idea style="color: #ffc217; flex: none; margin-top: 3px" />
+  <div><b>Telemetry everywhere. No first move.</b> The V1 dashboards are all still there — V3 did not replace them, it decided <b>the order in which you open them</b>.</div>
+</div>
 
 <style>
-.iter-title { margin: 0 0 0.34em; font-size: 30px; line-height: 1.18; white-space: nowrap; }
-.iter-align { display: grid; grid-template-columns: 0.78fr 1.22fr; gap: 20px; align-items: stretch; }
-.iter-copy { display: flex; flex-direction: column; gap: 10px; }
-.iter-step { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 12px 14px; border: 1px solid #ffffff1e; border-radius: 10px; background: #ffffff07; }
-.iter-step b { font-size: 15px; }
-.iter-step span { font-size: 12.5px; line-height: 1.5; opacity: 0.73; }
-.iter-step em { color: #b0ddff; font-style: normal; font-weight: 700; }
-.iter-step.hot { border-color: #2ee59d4a; background: #2ee59d0c; }
-.iter-step.hot b { color: #2ee59d; }
-.iter-source { min-height: 270px; padding: 11px; border-radius: 12px; background: #fffaf1; }
-.iter-source img { width: 100%; height: 100%; object-fit: contain; }
-.iter { display: flex; align-items: stretch; gap: 4px; }
-.it-card {
+.iv {
   flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 13px 15px;
+  padding: 11px 14px;
   border: 1px solid #ffffff1e;
-  border-radius: 12px;
+  border-radius: 11px;
   background: #ffffff07;
 }
-.it-card.hot { border-color: #2ee59d4a; background: #2ee59d0c; }
-.it-tag {
-  align-self: flex-start;
-  padding: 1px 10px;
-  border-radius: 999px;
-  background: #ffffff14;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11.5px;
-  font-weight: 700;
-  opacity: 0.75;
-}
-.it-card.hot .it-tag { background: #2ee59d26; color: #2ee59d; opacity: 1; }
-.it-name { font-size: 16.5px; font-weight: 600; margin-top: 7px; }
-.it-body { display: flex; flex-direction: column; flex: 1; }
-.it-vis {
-  height: 92px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 11px 0;
-}
-.it-box {
-  width: 26px;
-  height: 26px;
-  margin: 3px;
-  border: 1px solid #ffffff28;
-  border-radius: 5px;
-  background: #ffffff0d;
-}
-.it-vis:has(.it-box) { flex-wrap: wrap; max-width: 108px; margin-inline: auto; }
-.it-chain { display: flex; align-items: center; gap: 5px; }
-.it-chain span {
-  padding: 5px 9px;
-  border: 1px solid #b0ddff55;
-  border-radius: 7px;
-  background: #b0ddff14;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: #b0ddff;
-}
-.it-chain i {
-  width: 12px;
-  height: 1.5px;
-  background: #b0ddff66;
-}
-.it-funnel { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; }
-.it-f1, .it-f2, .it-f3 {
-  padding: 4px 0;
-  border-radius: 6px;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 600;
-  border: 1px solid #2ee59d4a;
-  background: #2ee59d14;
-  color: #d6ffee;
-}
-.it-f1 { width: 100%; }
-.it-f2 { width: 74%; }
-.it-f3 { width: 50%; background: #2ee59d2e; }
-.it-note { font-size: 12.5px; line-height: 1.55; opacity: 0.85; }
-.it-arrow { display: flex; align-items: center; color: #ffffff40; font-size: 18px; flex: none; }
-.iter-foot {
+.iv.hot { border-color: #2ee59d4a; background: #2ee59d0c; }
+.iv-t { font-size: 14.5px; font-weight: 600; margin-bottom: 4px; }
+.iv.hot .iv-t { color: #2ee59d; }
+.iv-d { font-size: 12px; line-height: 1.55; opacity: 0.85; }
+.iv-foot {
   display: flex;
   gap: 10px;
-  margin-top: 16px;
-  padding: 12px 16px;
+  margin-top: 12px;
+  padding: 11px 16px;
   border: 1px solid #ffc21735;
   border-radius: 11px;
   background: #ffc2170a;
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.55;
 }
 </style>
 
 <!--
-【6:05 – 7:05】
+【5:15 – 6:30】1.25 分钟
 
-V1 是这一堆方块 —— 按组件划分的视图，各自正确，缺一条请求路径。
+先承认一件事：我们不是没有可观测性，**我们有太多了**。
 
-V2 我们把它们串成了一条链：网关 → Prefill → KV 交接 → Decode。到这一步，我们终于能说清「在哪儿」了，但还是说不出「该做什么」。
+〔指左边那个抱头的小人〕
 
-V3 是现在这个漏斗：**八个入口信号 → 按需取证 → 一个可回滚的动作**，末尾带一道验证门。
+V1，组件视图。每一层都有人负责，每一块面板都是对的 —— 但**每一块都只是「局部正确」，没有一块是「第一块该打开的」**。
+端到端的请求路径，不在任何人的视图里。这就是那句：**遥测数据到处都是，就是没有第一步。**
 
-〔底部这句必须说，否则听众会觉得前后矛盾〕
+V2，我们把它们串成一条链：网关 → Prefill → KV 交接 → Decode。到这一步终于能说清「在哪儿」，但还是说不出「该做什么」。
 
-**我们一块面板都没有删。** V1 那些面板全都还在。V3 做的事情只有一件 —— **决定你打开它们的顺序。**
+V3 就是右边那张图 —— **信号 → 证据 → 一个可回滚的动作**，末尾带一道验证门。
+图里那四个角色（Model Ops、Engine、SRE、Business）说明同一条路径上，不同的人负责不同的一段。
+
+〔底部这句必须说，否则听众会觉得我们前后矛盾〕
+
+**我们一块面板都没有删。** V1 那些面板全都还在。V3 做的事情只有一件 ——
+**决定你打开它们的顺序。**
 
 那八个入口信号是什么？
--->
-
----
-layout: default
-glowSeed: 183
----
-
-# V3 — Eight Entry Signals. Proof on Demand.
-
-<div text-lg op-70 mt-1 mb-5>The homepage gives direction. Expert evidence stays one click away.</div>
-
-<div class="v3-align">
-  <div class="v3-visual">
-    <img src="/ppt-align/v3-entry-signals.png" alt="Entry signals connected to the PD request path and four operational roles">
-  </div>
-  <div class="v3-layers">
-    <div class="v3-layer hot"><b>1 · Operator entry</b><span>ready / errors · RPM / TPM · TTFT / TPOT · P / D waiting</span></div>
-    <div class="v3-layer"><b>2 · Next proof</b><span>Prefill · KV transfer · NIXL · Decode</span></div>
-    <div class="v3-layer"><b>3 · Raw detail</b><span>Only when it changes the next action</span></div>
-  </div>
-</div>
-
-<div class="v3-close">ENTRY → LOCALIZE → PROVE → ACT</div>
-
-<style>
-.v3-align { display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 20px; align-items: stretch; }
-.v3-visual { min-height: 330px; padding: 11px; border-radius: 12px; background: #fff; }
-.v3-visual img { width: 100%; height: 100%; object-fit: contain; }
-.v3-layers { display: flex; flex-direction: column; gap: 12px; }
-.v3-layer { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 7px; padding: 14px 16px; border: 1px solid #ffffff20; border-radius: 11px; background: #ffffff08; }
-.v3-layer b { font-size: 15.5px; color: #b0ddff; }
-.v3-layer span { font-size: 12.5px; line-height: 1.55; opacity: 0.76; }
-.v3-layer.hot { border-color: #ff7e6355; background: #ff7e630d; }
-.v3-layer.hot b { color: #ff9a84; }
-.v3-close { margin-top: 15px; padding: 11px 16px; border-left: 3px solid #2ee59d; background: #2ee59d0b; color: #d6ffee; font-size: 15px; font-weight: 700; letter-spacing: 0.05em; text-align: center; }
-</style>
-
-<!--
-【7:05 – 7:35】
-
-这张首页不负责回答所有问题，只负责告诉我下一次点击去 Prefill、KV handoff，还是 Decode。
-
-左边这张图来自我们在 PPT 里的完整方法图：模型运营和引擎团队先沿 Gateway、Prefill、KV Transfer、Decode 走请求路径；SRE 和业务分别拿到基础设施与用户影响的视角。
-
-第一层只放八个入口信号。第二层按需打开 Prefill、KV、NIXL 或 Decode 的证据。原始指标仍然保留，但只有在它会改变下一步动作时才打开。
-
-所以路径是：入口、定位、取证、行动。专家页没有消失，只是变成按需打开的 proof。
-
-那首页到底保留什么？下一页把 minimal 说清楚。
 -->
 
 ---
@@ -876,7 +672,7 @@ layout: default
 glowSeed: 205
 ---
 
-# Minimal = 4 Groups, 8 Entry Signals
+# Minimal = Eight Signals. One Next Proof.
 
 <div text-lg op-70 mt-1 mb-4>Not the metrics we have — the ones that decide which page opens next</div>
 
@@ -894,7 +690,7 @@ glowSeed: 205
 
 <div class="min-rule">
   <div i-carbon:filter style="color: #ffc217; flex: none; margin-top: 3px" />
-  <div>The inclusion rule: <b>if the value of a signal never changes what you do next, it is not an entry signal.</b> Everything else stays one click away as proof — not on the homepage.</div>
+  <div>The inclusion rule: <b>if the value of a signal never changes what you do next, it is not an entry signal.</b> The homepage gives direction; expert evidence stays <b>one click away</b>.</div>
 </div>
 
 <style>
@@ -933,7 +729,7 @@ glowSeed: 205
 </style>
 
 <!--
-【7:35 – 8:50】
+【6:30 – 7:45】
 
 四组，八个。
 
@@ -1044,7 +840,7 @@ glowSeed: 62
 </style>
 
 <!--
-【8:50 – 9:50】
+【7:45 – 8:45】
 
 第一步永远不是「哪个 GPU 慢」，而是 —— **我们还能不能接住流量。**
 
@@ -1172,7 +968,7 @@ glowSeed: 118
 </style>
 
 <!--
-【9:50 – 10:50】
+【8:45 – 9:45】
 
 第二步和第三步必须放在一起看，所以我合成了一页。
 
@@ -1269,7 +1065,7 @@ glowSeed: 232
 </style>
 
 <!--
-【10:50 – 11:40】
+【9:45 – 10:35】
 
 三条规则，很快：
 
@@ -1286,104 +1082,6 @@ TPOT 涨，加上 Decode 等待涨 → 去取 Decode 的证据。
 **最先动的那一段，就是边界。** 它下游的全是症状，它上游的已经被排除了。
 
 这也是为什么刚才第七页那次事故，四次读就能收敛 —— 不是我们运气好，是我们只看「谁先动」。
-
-这套东西在实际面板上长什么样？
--->
-
----
-layout: default
-glowSeed: 190
----
-
-# The Operator Homepage
-
-<div text-lg op-70 mt-1 mb-4>Eight signals, four groups, one next page</div>
-
-<div flex gap-6 items-start>
-
-<div style="flex: 1.35">
-  <img src="/shots/operator-home.jpg" class="shot" style="max-height: 330px; object-fit: cover; object-position: top">
-  <div class="oh-cav">
-    <div i-carbon:information style="color: #ffa35f; flex: none; margin-top: 2px" />
-    <span>Measured on a controlled demo environment — request-path and simulator signals, <b>not production evidence</b>.</span>
-  </div>
-</div>
-
-<div style="flex: 0.65">
-  <div class="oh-grid">
-    <div class="oh-cell"><span>01</span>READY + ERRORS</div>
-    <div class="oh-cell"><span>02</span>RPM + TOKEN TPM</div>
-    <div class="oh-cell"><span>03</span>TTFT + TPOT</div>
-    <div class="oh-cell"><span>04</span>P WAIT + D WAIT</div>
-  </div>
-  <div class="oh-note">
-    <div class="oh-nh">The rule for this page</div>
-    <div class="oh-nd">
-      If everything here is green, <b>stop</b> — there is nothing to act on.<br><br>
-      If something is red, this page does not tell you the root cause. It tells you <b>which single page to open next</b>.
-    </div>
-  </div>
-</div>
-
-</div>
-
-<style>
-.oh-grid { display: flex; flex-direction: column; gap: 8px; }
-.oh-cell {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 14px;
-  border: 1px solid #2ee59d33;
-  border-radius: 10px;
-  background: #2ee59d0a;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-}
-.oh-cell span {
-  flex: none;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
-  color: #2ee59d;
-  opacity: 0.8;
-}
-.oh-note {
-  margin-top: 13px;
-  padding: 13px 15px;
-  border: 1px solid #ffffff1e;
-  border-radius: 11px;
-  background: #ffffff07;
-}
-.oh-nh { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-.oh-nd { font-size: 12.5px; line-height: 1.6; opacity: 0.86; }
-.oh-cav {
-  display: flex;
-  gap: 8px;
-  margin-top: 11px;
-  padding: 9px 13px;
-  border: 1px solid #ffa35f33;
-  border-radius: 10px;
-  background: #ffa35f0a;
-  font-size: 11.5px;
-  line-height: 1.5;
-}
-</style>
-
-<!--
-【11:40 – 12:25】
-
-就是这样。右边四格，对应刚才那四组，八个信号，数字对得上。
-
-右下这条规则是这一页的价值：
-
-**全绿就停手** —— 没有需要做的事。
-
-**有红的，这一页也不告诉你根因**，它只告诉你：下一页该打开哪一个。
-
-〔橙色声明必须念出来，主动说明比被认出来强〕
-
-另外要说明：这是我们在**受控演示环境**上测的，是请求路径和模拟器的信号，**不是生产证据**。生产截图只在第四页和第七页。
 
 那从信号到证据，这个映射关系是什么？
 -->
@@ -1474,7 +1172,7 @@ glowSeed: 84
 </style>
 
 <!--
-【12:25 – 13:25】
+【10:35 – 11:35】
 
 六行，我挑三行讲，其余你们扫一眼就行。
 
@@ -1505,7 +1203,7 @@ glowSeed: 260
 <div text-2xl op-70 mt-3>Follow the first broken boundary</div>
 
 <!--
-【13:25 – 13:30】
+【11:35 – 11:40】
 
 第三部分，Demo。跟着第一个坏掉的边界走一遍。
 
@@ -1609,7 +1307,7 @@ glowSeed: 300
 </style>
 
 <!--
-【13:30 – 15:25】视频 1 分 24 秒
+【11:40 – 13:35】视频 1 分 24 秒
 
 先花二十秒说清楚要看什么，否则视频过去了大家抓不住重点。
 
@@ -1635,7 +1333,7 @@ glowSeed: 300
 · 静音 + autoplay：翻到这页自动播放；离开再回来会从头播
 · 若播放失败：跳过这一页，口述上面四个阶段，直接进 Cases 段。**不要在台上调播放器**
 
-【15:25 – 15:35】
+【13:35 – 13:45】
 
 第四部分。分钟到底花在哪儿了。
 
@@ -1841,7 +1539,7 @@ glowSeed: 134
 </style>
 
 <!--
-【15:35 – 16:50】
+【13:45 – 15:00】
 
 Prefill 的 TTFT 被什么撑起来？四件事。**前两件是这个请求自己的活，后两件是别人的活。**
 
@@ -2049,7 +1747,7 @@ glowSeed: 204
 </style>
 
 <!--
-【16:50 – 18:05】
+【15:00 – 16:15】
 
 先纠正一个直觉：**KV 空间不是「够不够用」的问题。它是一份被所有请求共享的预算 —— 而 TTFT 在替它买单。**
 
@@ -2224,7 +1922,7 @@ glowSeed: 30
 </style>
 
 <!--
-【18:05 – 19:05】
+【16:15 – 17:15】
 
 这一层是 PD 分离独有的，也是现有的可观测性分享基本没有覆盖的。
 
@@ -2290,7 +1988,7 @@ glowSeed: 122
 </style>
 
 <!--
-【19:05 – 20:05】
+【17:15 – 18:15】
 
 这一页是整套方法的收口，也是我们和大多数可观测性分享最大的区别 —— **大多数讲到「动作」就停了。**
 
@@ -2329,7 +2027,7 @@ glowSeed: 168
 </div>
 
 <!--
-【20:05 – 20:15】
+【18:15 – 18:25】
 
 第五部分，案例。两个真实事故，一套诊断模式。
 
@@ -2413,7 +2111,7 @@ glowSeed: 214
 </style>
 
 <!--
-【20:15 – 21:30】
+【18:25 – 19:40】
 
 第一个案例，就是开场那次告警的下半场。还记得吗 —— Prefill 等待从 1 冲到 150。
 
@@ -2529,7 +2227,7 @@ glowSeed: 146
 </style>
 
 <!--
-【21:30 – 22:55】
+【19:40 – 21:05】
 
 标题就是结论：**卡一张没少，容量没了。**
 
@@ -2661,7 +2359,7 @@ glowSeed: 238
 </style>
 
 <!--
-【22:55 – 23:55】
+【21:05 – 22:05】
 
 〔先说这句，然后真的停十秒，不要一边停一边说话〕
 
@@ -2691,66 +2389,78 @@ glowSeed: 108
 
 # Key Takeaways
 
-<div text-lg op-70 mt-1 mb-6>Three things to carry out of this room</div>
+<div text-lg op-70 mt-1 mb-4>“The best dashboard is the one you actually use.” — so you never have to stare at it at 2 AM</div>
 
-<div class="kt">
-  <div class="kt-c">
-    <div class="kt-n">1</div>
-    <div class="kt-t">TTFT tells you <span style="color:#ffc217">that</span>, never <span style="color:#ffc217">where</span></div>
-    <div class="kt-d">It is the sum of four stages, and the sum is not invertible. Use it to open an investigation — never to close one.</div>
-  </div>
-  <div class="kt-c">
-    <div class="kt-n">2</div>
-    <div class="kt-t">More dashboards ≠ more visibility</div>
-    <div class="kt-d">Eight entry signals decide which page opens next. Everything else stays one click away as proof, not on the homepage.</div>
-  </div>
-  <div class="kt-c">
-    <div class="kt-n">3</div>
-    <div class="kt-t">A diagnosis must predict a change</div>
-    <div class="kt-d">One change, one validation gate, one rollback condition — written down before you touch anything.</div>
+<div flex gap-6 items-start>
+
+<div style="flex: 1">
+  <div class="kt">
+    <div class="kt-c">
+      <div class="kt-n">1</div>
+      <div class="kt-b">
+        <div class="kt-t">TTFT tells you <span style="color:#ffc217">that</span> — never <span style="color:#ffc217">where</span></div>
+        <div class="kt-d">It is the sum of four stages. Use it to <b>open</b> an investigation, never to <b>close</b> one.</div>
+      </div>
+    </div>
+    <div class="kt-c">
+      <div class="kt-n">2</div>
+      <div class="kt-b">
+        <div class="kt-t">More dashboards ≠ more visibility</div>
+        <div class="kt-d">Eight entry signals decide which page opens next. Everything else stays <b>one click away</b>.</div>
+      </div>
+    </div>
+    <div class="kt-c">
+      <div class="kt-n">3</div>
+      <div class="kt-b">
+        <div class="kt-t">A diagnosis must predict a change</div>
+        <div class="kt-d">One change, one validation gate, one rollback condition — <b>written before</b> touching anything.</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="kt-q">
-  “The best dashboard is the one you actually open at 2 AM.”
+<div style="flex: 0 0 226px" flex flex-col items-center>
+  <img src="/overtime.gif" class="kt-gif">
+  <div class="kt-cap">so nobody gets paged at 2 AM</div>
+</div>
+
 </div>
 
 <style>
-.kt { display: flex; gap: 15px; }
+.kt { display: flex; flex-direction: column; gap: 12px; }
 .kt-c {
-  flex: 1;
-  padding: 18px 19px;
+  display: flex;
+  gap: 13px;
+  padding: 14px 17px;
   border: 1px solid #ffffff1e;
   border-radius: 13px;
   background: #ffffff07;
 }
 .kt-n {
-  width: 34px;
-  height: 34px;
-  line-height: 34px;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
   text-align: center;
-  border-radius: 10px;
+  border-radius: 9px;
   background: #ffc21720;
   color: #ffc217;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
 }
-.kt-t { font-size: 19px; font-weight: 600; line-height: 1.3; margin: 13px 0 9px; }
-.kt-d { font-size: 13.5px; line-height: 1.65; opacity: 0.82; }
-.kt-q {
-  margin-top: 22px;
-  padding: 15px 20px;
-  border-left: 3px solid #2ee59d;
-  background: #2ee59d0a;
-  font-size: 18px;
-  font-style: italic;
-  opacity: 0.92;
+.kt-t { font-size: 17.5px; font-weight: 600; line-height: 1.3; }
+.kt-d { font-size: 13px; line-height: 1.6; opacity: 0.82; margin-top: 5px; }
+.kt-gif {
+  width: 200px;
+  border-radius: 14px;
+  border: 1px solid #ffffff1f;
 }
+.kt-cap { font-size: 11.5px; opacity: 0.5; margin-top: 9px; text-align: center; }
 </style>
 
 <!--
-【23:55 – 24:40】
+【22:05 – 22:50】
 
 三句话，带走就行。每句十几秒，不要展开 —— 展开的内容前面全讲过了。
 
@@ -2778,22 +2488,22 @@ glowSeed: 156
   <div class="co-c">
     <div class="co-h"><div i-carbon:model-alt style="color: #2ee59d" />Request context</div>
     <div class="co-p">vLLM · SGLang</div>
-    <div class="co-d">Per-request latency, queue, token shape, and traces are already exposed. The data exists.</div>
+    <div class="co-d">Per-request latency, queue, token shape, and traces <b>already exist</b>.</div>
   </div>
   <div class="co-c">
     <div class="co-h"><div i-carbon:connect style="color: #b0ddff" />Portable semantics</div>
     <div class="co-p">OpenTelemetry GenAI</div>
-    <div class="co-d">Shared field names across inference layers — still evolving, so instrument now but do not hard-code alerts to field names.</div>
+    <div class="co-d">Shared field names are <b>still evolving</b>; instrument now without hard-coding alerts to them.</div>
   </div>
   <div class="co-c">
     <div class="co-h"><div i-carbon:router style="color: #ffc217" />Role-aware control</div>
     <div class="co-p">llm-d · GAIE</div>
-    <div class="co-d">P/D roles, queue state, and in-flight tokens already drive routing and autoscaling decisions.</div>
+    <div class="co-d">P/D roles, queue state, and in-flight tokens <b>already drive</b> routing and autoscaling.</div>
   </div>
   <div class="co-c">
     <div class="co-h"><div i-carbon:data-share style="color: #ffa35f" />KV movement</div>
     <div class="co-p">NIXL · external KV tiers</div>
-    <div class="co-d">Hit, bytes, latency, and failure are first-class signals — the PD-only failure domain is finally measurable.</div>
+    <div class="co-d">Hit, bytes, latency, and failure make the <b>PD-only boundary measurable</b>.</div>
   </div>
 </div>
 
@@ -2836,7 +2546,7 @@ glowSeed: 156
 </style>
 
 <!--
-【24:40 – 25:10】
+【22:50 – 23:20】
 
 最后说一下社区。这套方法**不需要造任何新轮子**。
 
@@ -2892,7 +2602,7 @@ footer: false
 </div>
 
 <!--
-【25:10 – 结束】
+【23:20 – 结束】
 
 谢谢大家。欢迎提问。
 

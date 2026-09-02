@@ -315,3 +315,12 @@ iframe {
 .slidev-layout div[flex] > div[style*="flex:"] {
   min-width: 0;
 }
+
+/* hand-drawn illustrations from the source deck (light background) */
+.illus {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  border: 1px solid #ffffff1a;
+  background: #fff;
+}

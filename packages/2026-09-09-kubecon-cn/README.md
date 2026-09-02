@@ -20,12 +20,14 @@ pnpm --filter 2026-09-09-kubecon-cn dev
 
 | 段落 | 页 | 内容 |
 |---|---|---|
-| Background | 4–7 | 告警现场 → 面板迷宫 → PD 生命周期 → 沿路径四次读收敛 |
-| Method | 8–17 | V1→V2→V3 三次迭代 → 4 组 8 个入口信号 → 四步走 → Operator homepage |
-| Demo | 18–19 | 录屏：baseline → incident → evidence → recovery |
-| Inside the engine | 20–24 | 三个机制页（Prefill 四因素 / KV 空间预算 / KV Transfer 零字节）→ 验证闭环 |
-| Cases | 25–27 | 两个一页式案例（队头阻塞 → 路由准入 / TP 掉队 rank → DCGM+NCCL 定位），左图右“看到 → 意味着 → 改了 → 验证” |
-| 收尾 | 28–31 | Playbook 一页纸 → takeaways → 社区展望 → Q&A |
+| Background | 3–7 | 告警现场 → 面板迷宫 → PD 生命周期 → 沿路径四次读收敛 |
+| Method | 8–14 | 从面板泛滥到动作路径 → 8 个入口信号 → 四步走 → 两信号买一页证据 |
+| Demo | 15–16 | 录屏 1:24：信号 → 边界 → 动作 → 验证 |
+| Inside the engine | 17–21 | 三个机制页 → 验证闭环 |
+| Cases | 22–24 | 两个一页式案例 |
+| 收尾 | 25–28 | Playbook → takeaways → 社区展望 → Q&A |
+
+结构对齐 `kubecon2026 - Why Your TTFT Lies.pptx`（新版）。
 
 - `slides.md` — 全部幻灯片，**中文讲法写在每页末尾的 HTML 注释里**（演讲者模式可见）
 - `speaker-notes.md` — 时间轴、超时预案、诚实口径、Backup 翻页索引、待补素材
