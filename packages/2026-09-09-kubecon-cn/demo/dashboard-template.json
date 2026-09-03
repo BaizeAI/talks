@@ -1,0 +1,843 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "正常：Gateway 有健康实例；异常：数值为 0 或突然下降，优先排查 Knoway 入口和 Pod。",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "id": 101,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.14",
+      "targets": [
+        {
+          "expr": "sum(up{cluster_name=~\"$cluster\",namespace=\"hydra-system\",job=~\"knoway-gateway.*\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Knoway Gateway Healthy",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "正常：Ready Pod 数量符合部署规模；异常：数量下降或为 0，说明模型池容量或调度可能异常。",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "id": 102,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.14",
+      "targets": [
+        {
+          "expr": "sum(inference_pool_ready_pods{cluster_name=~\"$cluster\",namespace=~\"$model_namespace\",name=~\"$llm_d_model\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "LLM-D EPP Ready Pods",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "vLLM 正在排队请求数\n正常：Prefill、Decode 和 Total 等待请求量较低且随流量变化；异常：任一角色持续升高，说明模型服务发生拥塞。",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 12,
+        "y": 1
+      },
+      "id": 106,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.14",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "sum(vllm:num_requests_waiting{cluster_name=~\"$cluster\",namespace=~\"$model_namespace\",model_name=~\"${vllm_model:pipe}\",pod=~\"${llm_d_model:regex}.*(prefill|decode).*\"})",
+          "legendFormat": "Total",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "sum(vllm:num_requests_waiting{cluster_name=~\"$cluster\",namespace=~\"$model_namespace\",model_name=~\"${vllm_model:pipe}\",pod=~\"${llm_d_model:regex}.*prefill.*\"})",
+          "legendFormat": "Prefill",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "sum(vllm:num_requests_waiting{cluster_name=~\"$cluster\",namespace=~\"$model_namespace\",model_name=~\"${vllm_model:pipe}\",pod=~\"${llm_d_model:regex}.*decode.*\"})",
+          "legendFormat": "Decode",
+          "refId": "B"
+        }
+      ],
+      "title": "vLLM Waiting Requests (Prefill / Decode / Total)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "正常：Mean/P95/P99 稳定且符合 SLO；异常：延迟升高，优先排查 Prefill、队列和 KV。",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 20
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 0,
+        "y": 39
+      },
+      "id": 110,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.14",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(knoway_llm_ttft_seconds_sum{cluster=~\"$cluster_id\",llm_request_up_model=~\"$knoway_model\"}[$__rate_interval])) / sum(rate(knoway_llm_ttft_seconds_count{cluster=~\"$cluster_id\",llm_request_up_model=~\"$knoway_model\"}[$__rate_interval]))",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Overall TTFT (Mean)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "正常：TTFT P95 稳定且符合 SLO；异常：持续升高，优先排查入口排队、Prefill 和 KV 访问。",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "#EAB839",
+                "value": 900
+              },
+              {
+                "color": "red",
+                "value": 1800
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 65
+      },
+      "id": 124,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(knoway_llm_ttft_seconds_bucket{cluster=~\"$cluster_id\",llm_request_up_model=~\"$knoway_model\"}[$__rate_interval])))",
+          "legendFormat": "TTFT P95",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(knoway_llm_ttft_seconds_bucket{cluster=~\"$cluster_id\",llm_request_up_model=~\"$knoway_model\"}[$__rate_interval])))",
+          "hide": false,
+          "legendFormat": "TTFT P99",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.50, sum by (le) (rate(knoway_llm_ttft_seconds_bucket{cluster=~\"$cluster_id\",llm_request_up_model=~\"$knoway_model\"}[$__rate_interval])))",
+          "hide": false,
+          "legendFormat": "TTFT P50",
+          "range": true,
+          "refId": "C"
+        }
+      ],
+      "title": "Knoway TTFT",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "正常：路由延迟低且各分位数稳定；异常：P95/P99 升高，优先排查 Gateway、EPP 或路由策略。",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 2
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 89
+      },
+      "id": 142,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum by (le, model_name) (rate(inference_objective_request_duration_seconds_bucket{cluster_name=~\"$cluster\",pod=~\"^(${llm_d_model:regex}).*\"}[$__rate_interval])))",
+          "legendFormat": "{{model_name}} P50",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum by (le, model_name) (rate(inference_objective_request_duration_seconds_bucket{cluster_name=~\"$cluster\",pod=~\"^(${llm_d_model:regex}).*\"}[$__rate_interval])))",
+          "legendFormat": "{{model_name}} P95",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum by (le, model_name) (rate(inference_objective_request_duration_seconds_bucket{cluster_name=~\"$cluster\",pod=~\"^(${llm_d_model:regex}).*\"}[$__rate_interval])))",
+          "legendFormat": "{{model_name}} P99",
+          "refId": "C"
+        }
+      ],
+      "title": "LLM-D Route Latency by Model P50 / P95 / P99",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "正常：Waiting 较低且 Running 随流量变化；异常：Waiting 持续升高，说明 Prefill/Decode 侧发生排队。",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "#EAB839",
+                "value": 20
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 98
+      },
+      "id": 151,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(vllm:num_requests_waiting{cluster_name=~\"$cluster\",namespace=~\"$model_namespace\",model_name=~\"${vllm_model:pipe}\",pod=~\"${llm_d_model:regex}.*prefill.*\"})",
+          "legendFormat": "waiting / prefill",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(vllm:num_requests_waiting{cluster_name=~\"$cluster\",namespace=~\"$model_namespace\",model_name=~\"${vllm_model:pipe}\",pod=~\"${llm_d_model:regex}.*decode.*\"})",
+          "legendFormat": "waiting / decode",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(vllm:num_requests_waiting{cluster_name=~\"$cluster\",namespace=~\"$model_namespace\",model_name=~\"${vllm_model:pipe}\",pod=~\"${llm_d_model:regex}.*(prefill|decode).*\"})",
+          "legendFormat": "waiting / total",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(vllm:num_requests_running{cluster_name=~\"$cluster\",namespace=~\"$model_namespace\",model_name=~\"${vllm_model:pipe}\",pod=~\"${llm_d_model:regex}.*prefill.*\"})",
+          "legendFormat": "running / prefill",
+          "refId": "D"
+        },
+        {
+          "expr": "sum(vllm:num_requests_running{cluster_name=~\"$cluster\",namespace=~\"$model_namespace\",model_name=~\"${vllm_model:pipe}\",pod=~\"${llm_d_model:regex}.*decode.*\"})",
+          "legendFormat": "running / decode",
+          "refId": "E"
+        },
+        {
+          "expr": "sum(vllm:num_requests_running{cluster_name=~\"$cluster\",namespace=~\"$model_namespace\",model_name=~\"${vllm_model:pipe}\",pod=~\"${llm_d_model:regex}.*(prefill|decode).*\"})",
+          "legendFormat": "running / total",
+          "refId": "F"
+        }
+      ],
+      "title": "LLM - vLLM Waiting and Running by Role",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "正常：淘汰/降级速率随负载平稳；异常：突然升高，说明 KV 容量不足或缓存抖动。",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 120
+      },
+      "id": 187,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(redhare_local_evictions_total{kv_cluster=~\"$redhare_cluster\",instance=~\"$redhare_instance\"}[$__rate_interval])) or vector(0)",
+          "legendFormat": "local_evictions",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(redhare_shared_fs_demote_total{kv_cluster=~\"$redhare_cluster\",instance=~\"$redhare_instance\"}[$__rate_interval])) or vector(0)",
+          "legendFormat": "shared_fs_demote",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(rate(redhare_remote_dram_window_evictions_total{kv_cluster=~\"$redhare_cluster\",instance=~\"$redhare_instance\"}[$__rate_interval])) or vector(0)",
+          "legendFormat": "remote_window_evictions",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(rate(redhare_remote_dram_main_evictions_total{kv_cluster=~\"$redhare_cluster\",instance=~\"$redhare_instance\"}[$__rate_interval])) or vector(0)",
+          "legendFormat": "remote_main_evictions",
+          "refId": "D"
+        }
+      ],
+      "title": "Redhare KV Eviction / Demotion / sec",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "正常：各 Outcome 的 Get p99 低且稳定；异常：某一 Outcome 延迟升高，优先定位对应 KV 后端路径。",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 138
+      },
+      "id": 190,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum by (le, outcome) (rate(redhare_get_latency_seconds_bucket{kv_cluster=~\"$redhare_cluster\",instance=~\"$redhare_instance\"}[$__rate_interval]))) or (histogram_quantile(0.99, sum by (le, outcome) (rate(redhare_get_latency_us_bucket{kv_cluster=~\"$redhare_cluster\",instance=~\"$redhare_instance\"}[$__rate_interval]))) / 1000000)",
+          "legendFormat": "{{outcome}} p99",
+          "refId": "A"
+        }
+      ],
+      "title": "Redhare Get p99 Latency by Outcome",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 37,
+  "tags": [
+    "inferx",
+    "kubecon",
+    "demo"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "InferX Model Operations Demo Template",
+  "uid": "inferx-model-ops-demo-template",
+  "version": 1,
+  "weekStart": ""
+}

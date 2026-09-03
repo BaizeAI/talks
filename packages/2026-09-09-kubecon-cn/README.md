@@ -16,7 +16,7 @@ pnpm --filter 2026-09-09-kubecon-cn dev
 
 ## 结构
 
-正片 31 页（无 Backup）。前 20 页的内容与顺序对齐 Nicole 的 `kubecon2026-ttft-0831.pptx`；图像尽量沿用 PPT 原始素材，信息密集处保留更清晰的 Slidev 卡片表达。第 21 页以后按“机制 → 事故”展开：
+正片 28 页（无 Backup）。前 20 页的内容与顺序对齐 Nicole 的 `kubecon2026-ttft-0831.pptx`；图像尽量沿用 PPT 原始素材，信息密集处保留更清晰的 Slidev 卡片表达。第 21 页以后按“机制 → 事故”展开：
 
 | 段落 | 页 | 内容 |
 |---|---|---|
@@ -31,6 +31,26 @@ pnpm --filter 2026-09-09-kubecon-cn dev
 
 - `slides.md` — 全部幻灯片，**中文讲法写在每页末尾的 HTML 注释里**（演讲者模式可见）
 - `speaker-notes.md` — 时间轴、超时预案、诚实口径、Backup 翻页索引、待补素材
+
+## 可复现 Demo
+
+演讲使用的 macOS + kind 故障诊断 Demo 已放在 [`demo/`](./demo/)；需要 Docker Desktop、`kind`、`kubectl`、`python3` 和 `curl`。
+
+```bash
+cd packages/2026-09-09-kubecon-cn/demo
+
+make up
+make baseline-test
+make open-dashboard
+
+make baseline
+make incident
+make evidence
+make recovery
+make status
+```
+
+完整说明、数据边界和清理命令见 [`demo/README.md`](./demo/README.md)。Python 缓存及其他运行时产物不纳入版本库。
 
 ## 组件
 

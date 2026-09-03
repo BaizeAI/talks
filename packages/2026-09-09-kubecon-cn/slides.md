@@ -2578,7 +2578,7 @@ footer: false
 
 <div text-xl op-75 mt-2 mb-8>Thank you for your attention</div>
 
-<div flex items-start justify-center gap-20>
+<div flex items-start justify-center gap-16>
   <div flex flex-col items-center>
     <img src="/person/nicole.jpg" w-28 h-28 rounded-full object-cover mb-4>
     <span font-semibold text-xl>Nicole Li</span>
@@ -2593,6 +2593,15 @@ footer: false
       <div i-ri:github-fill /><span font-mono>kebe7jun</span>
     </div>
   </div>
+  <div flex flex-col items-center>
+    <div bg-white p-2 rounded-xl shadow-lg>
+      <img src="/kubecon-2026-repo-qr.png" w-28 h-28 alt="Slides and demo repository QR code">
+    </div>
+    <span font-semibold text-xl mt-4>Slides &amp; Demo</span>
+    <div text-sm flex items-center justify-center gap-2 mt-2 op-75>
+      <div i-ri:github-fill /><span font-mono>BaizeAI/talks</span>
+    </div>
+  </div>
 </div>
 
 <div mt-9 text-base op-60>DaoCloud &nbsp;·&nbsp; Inference Acceleration Team</div>
@@ -2605,6 +2614,8 @@ footer: false
 【23:20 – 结束】
 
 谢谢大家。欢迎提问。
+
+最后一页的二维码指向本次演讲的 Slides 与可复现 Demo 源码。
 
 ════════ 高频问题的回答口径 ════════
 

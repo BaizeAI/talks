@@ -1,0 +1,6 @@
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Local editor / OS files
+.DS_Store
