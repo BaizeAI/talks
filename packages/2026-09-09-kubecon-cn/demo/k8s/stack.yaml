@@ -1,0 +1,592 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: ppt-demo
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 2s
+      evaluation_interval: 2s
+    scrape_configs:
+      - job_name: llm-d-inference-sim
+        metrics_path: /metrics
+        static_configs:
+          - targets: ["inference-sim.ppt-demo.svc.cluster.local:8000"]
+            labels:
+              cluster_name: macos-kind
+      - job_name: ppt-demo-gateway
+        metrics_path: /metrics
+        static_configs:
+          - targets: ["gateway-demo.ppt-demo.svc.cluster.local:9109"]
+            labels:
+              cluster_name: macos-kind
+              proxy_role: gateway
+      - job_name: ppt-demo-epp
+        metrics_path: /metrics
+        static_configs:
+          - targets: ["epp-demo.ppt-demo.svc.cluster.local:9109"]
+            labels:
+              cluster_name: macos-kind
+              proxy_role: epp
+      - job_name: cross-layer-telemetry
+        metrics_path: /metrics
+        static_configs:
+          - targets: ["telemetry-replay.ppt-demo.svc.cluster.local:9108"]
+            labels:
+              cluster_name: macos-kind
+      - job_name: demo-loadgen
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names: ["loadgen-metrics.ppt-demo.svc.cluster.local"]
+            type: A
+            port: 9109
+            refresh_interval: 2s
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasource
+  namespace: ppt-demo
+data:
+  datasource.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        uid: prometheus
+        access: proxy
+        url: http://prometheus:9090
+        isDefault: true
+        editable: false
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-provider
+  namespace: ppt-demo
+data:
+  provider.yaml: |
+    apiVersion: 1
+    providers:
+      - name: ppt-demo
+        orgId: 1
+        folder: KubeCon TTFT
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 5
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inference-sim
+  namespace: ppt-demo
+  labels:
+    app: inference-sim
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inference-sim
+  template:
+    metadata:
+      labels:
+        app: inference-sim
+        llm-d.ai/role: decode
+    spec:
+      containers:
+        - name: inference-sim
+          image: ghcr.io/llm-d/llm-d-inference-sim:v0.10.2
+          imagePullPolicy: IfNotPresent
+          args:
+            - --model
+            - demo-model
+            - --port
+            - "8000"
+            - --mode
+            - echo
+            - --force-dummy-tokenizer
+            - --time-to-first-token
+            - 200ms
+            - --inter-token-latency
+            - 15ms
+            - --max-num-seqs
+            - "4"
+            - --time-factor-under-load
+            - "2.5"
+          ports:
+            - name: http
+              containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 2
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: "2"
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inference-sim
+  namespace: ppt-demo
+spec:
+  selector:
+    app: inference-sim
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-demo
+  namespace: ppt-demo
+  labels:
+    app: gateway-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-demo
+  template:
+    metadata:
+      labels:
+        app: gateway-demo
+    spec:
+      containers:
+        - name: gateway-demo
+          image: python:3.12-alpine
+          imagePullPolicy: IfNotPresent
+          command:
+            - python3
+            - /opt/demo/traffic_proxy.py
+            - --role
+            - gateway
+            - --upstream
+            - http://epp-demo:8000
+            - --listen-host
+            - 0.0.0.0
+            - --listen-port
+            - "8000"
+            - --metrics-port
+            - "9109"
+          ports:
+            - name: http
+              containerPort: 8000
+            - name: metrics
+              containerPort: 9109
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            initialDelaySeconds: 1
+            periodSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          volumeMounts:
+            - name: app
+              mountPath: /opt/demo
+              readOnly: true
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+      volumes:
+        - name: app
+          configMap:
+            name: ppt-demo-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-demo
+  namespace: ppt-demo
+spec:
+  selector:
+    app: gateway-demo
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+      nodePort: 30080
+    - name: metrics
+      port: 9109
+      targetPort: metrics
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: epp-demo
+  namespace: ppt-demo
+  labels:
+    app: epp-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: epp-demo
+  template:
+    metadata:
+      labels:
+        app: epp-demo
+    spec:
+      containers:
+        - name: epp-demo
+          image: python:3.12-alpine
+          imagePullPolicy: IfNotPresent
+          command:
+            - python3
+            - /opt/demo/traffic_proxy.py
+            - --role
+            - epp
+            - --upstream
+            - http://inference-sim:8000
+            - --listen-host
+            - 0.0.0.0
+            - --listen-port
+            - "8000"
+            - --metrics-port
+            - "9109"
+          ports:
+            - name: http
+              containerPort: 8000
+            - name: metrics
+              containerPort: 9109
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            initialDelaySeconds: 1
+            periodSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          volumeMounts:
+            - name: app
+              mountPath: /opt/demo
+              readOnly: true
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+      volumes:
+        - name: app
+          configMap:
+            name: ppt-demo-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: epp-demo
+  namespace: ppt-demo
+spec:
+  selector:
+    app: epp-demo
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+    - name: metrics
+      port: 9109
+      targetPort: metrics
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telemetry-replay
+  namespace: ppt-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telemetry-replay
+  template:
+    metadata:
+      labels:
+        app: telemetry-replay
+    spec:
+      containers:
+        - name: telemetry-replay
+          image: python:3.12-alpine
+          imagePullPolicy: IfNotPresent
+          command:
+            - python3
+            - /opt/demo/telemetry_replay.py
+            - --host
+            - 0.0.0.0
+            - --port
+            - "9108"
+          ports:
+            - name: metrics
+              containerPort: 9108
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            initialDelaySeconds: 1
+            periodSeconds: 2
+          volumeMounts:
+            - name: app
+              mountPath: /opt/demo
+              readOnly: true
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 64Mi
+      volumes:
+        - name: app
+          configMap:
+            name: ppt-demo-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: telemetry-replay
+  namespace: ppt-demo
+spec:
+  selector:
+    app: telemetry-replay
+  ports:
+    - name: metrics
+      port: 9108
+      targetPort: metrics
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loadgen
+  namespace: ppt-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loadgen
+  template:
+    metadata:
+      labels:
+        app: loadgen
+    spec:
+      containers:
+        - name: loadgen
+          image: python:3.12-alpine
+          imagePullPolicy: IfNotPresent
+          command: ["python3", "/opt/demo/loadgen.py"]
+          env:
+            - name: TARGET_URL
+              value: http://gateway-demo:8000/v1/chat/completions
+            - name: MODEL
+              value: demo-model
+            - name: INTERVAL_SECONDS
+              value: "0.25"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          ports:
+            - name: metrics
+              containerPort: 9109
+          volumeMounts:
+            - name: app
+              mountPath: /opt/demo
+              readOnly: true
+          resources:
+            requests:
+              cpu: 10m
+              memory: 24Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+      volumes:
+        - name: app
+          configMap:
+            name: ppt-demo-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loadgen-metrics
+  namespace: ppt-demo
+spec:
+  clusterIP: None
+  selector:
+    app: loadgen
+  ports:
+    - name: metrics
+      port: 9109
+      targetPort: metrics
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: ppt-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:v2.54.1
+          imagePullPolicy: IfNotPresent
+          args:
+            - --config.file=/etc/prometheus/prometheus.yml
+            - --storage.tsdb.path=/prometheus
+            - --storage.tsdb.retention.time=2h
+            - --web.enable-lifecycle
+          ports:
+            - name: http
+              containerPort: 9090
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 2
+          volumeMounts:
+            - name: config
+              mountPath: /etc/prometheus
+              readOnly: true
+            - name: data
+              mountPath: /prometheus
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: config
+          configMap:
+            name: prometheus-config
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: ppt-demo
+spec:
+  selector:
+    app: prometheus
+  ports:
+    - name: http
+      port: 9090
+      targetPort: http
+      nodePort: 30090
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: ppt-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana:11.2.2
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: "true"
+            - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+              value: Viewer
+            - name: GF_AUTH_DISABLE_LOGIN_FORM
+              value: "true"
+            - name: GF_USERS_DEFAULT_THEME
+              value: light
+          ports:
+            - name: http
+              containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 2
+          volumeMounts:
+            - name: datasource
+              mountPath: /etc/grafana/provisioning/datasources
+              readOnly: true
+            - name: provider
+              mountPath: /etc/grafana/provisioning/dashboards
+              readOnly: true
+            - name: dashboard
+              mountPath: /var/lib/grafana/dashboards
+              readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: datasource
+          configMap:
+            name: grafana-datasource
+        - name: provider
+          configMap:
+            name: grafana-dashboard-provider
+        - name: dashboard
+          configMap:
+            name: ppt-demo-dashboard
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: ppt-demo
+spec:
+  selector:
+    app: grafana
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http
+      nodePort: 30300
+  type: NodePort
