@@ -1034,11 +1034,11 @@ layout: default
 glowSeed: 134
 ---
 
-# Four Things Inflate a Prefill TTFT
+# Three Things Inflate a Prefill TTFT
 
-<div text-lg op-70 mt-1 mb-3>Two are the request's own work. Two belong to somebody else.</div>
+<div text-lg op-70 mt-1 mb-3>Two are the request's own work. One belongs to somebody else.</div>
 
-<div flex gap-5 items-start>
+<div flex gap-5 items-stretch>
 
 <div style="flex: 1.02">
   <div class="pf-h"><span class="pf-n own">OWN WORK</span>What this request must compute</div>
@@ -1089,16 +1089,6 @@ glowSeed: 134
       <div>Visible only if <code>request_queue_time</code> is split from <code>request_prefill_time</code> — aggregate TTFT shows a slow request, the split shows <b>whose fault it was</b>.</div>
     </div>
   </div>
-  <div class="pf-knob">
-    <div class="pf-kt"><span class="pf-i">4</span>Chunk size — the knob that trades ③ against ①②</div>
-    <div class="pf-kd">
-      <b>Small</b> — long prompts interleave, R2 served sooner, more per-iteration overhead.
-      <b>Large</b> — higher throughput, but one prompt owns the iteration.
-      <br>
-      Same 144K prompt: <b style="color:#ff8f8f">72.7 s</b> at chunk 512 vs <b style="color:#2ee59d">35.8 s</b> at 8192 —
-      <b style="color:#ffc217">2× from one parameter.</b>
-    </div>
-  </div>
 </div>
 
 </div>
@@ -1131,6 +1121,10 @@ glowSeed: 134
 .pf-card:last-child { margin-bottom: 0; }
 .pf-card + .pf-card { margin-bottom: 0; }
 .pf-card.hot { border-color: #ff6b6b33; background: #ff6b6b08; }
+/* right column: let the single card fill the column height */
+.slidev-layout div[flex] > div:last-child { display: flex; flex-direction: column; }
+.slidev-layout div[flex] > div:last-child > .pf-card { flex: 1; display: flex; flex-direction: column; }
+.pf-card.hot .pf-sig { margin-top: auto; }
 .pf-t {
   display: flex;
   align-items: center;
@@ -1198,22 +1192,6 @@ glowSeed: 134
   border-radius: 4px;
   background: #ffffff14;
 }
-.pf-knob {
-  margin-top: 9px;
-  padding: 9px 13px;
-  border: 1px solid #ffc21735;
-  border-radius: 11px;
-  background: #ffc2170a;
-}
-.pf-kt {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-.pf-kd { font-size: 12px; line-height: 1.6; opacity: 0.9; }
 </style>
 ---
 layout: default
@@ -1283,8 +1261,8 @@ glowSeed: 204
       <span>Latent KV is shared across heads — <b>nothing to split</b>, so it is <b>replicated on every rank</b>. TP=8 → 8×. Fix: DP attention.</span>
     </div>
     <div class="bd">
-      <b>max_model_len</b>
-      <span>Reserved against the <b>worst case</b>, not your real p99 input length.</span>
+      <b>gpu_memory_utilization</b>
+      <span>The pool is only what is <b>left over</b> after weights and peak activations are profiled. Shaving 0.95 → 0.85 deletes ~10% of the GPU — nearly all of it KV.</span>
     </div>
     <div class="bd">
       <b>FP16 KV</b>
