@@ -75,25 +75,28 @@ make status
 - 指标名取自 llm-d EPP、vLLM、NIXL、DCGM 的原生 Prometheus 指标
 - **不上屏任何部署细节**：量化格式、副本数与 P:D 具体配比、并行度、内部代号、域名、集群 ID、主机名、IP
 
-## 第 19 页的 Demo 录屏（已就位）
+## 第 16 页的 Demo 录屏（已就位）
 
-视频已从 `kubecon2026-ttft-0831.pptx` 提取并压缩：
+视频已从 `ttft-v3.mov` 压缩，保留原始分辨率：
 
 | | |
 |---|---|
-| 源 | `ppt/media/media1.mp4`，85 MB，2880×1800，2 fps，1:24 |
-| 现在 | `public/demo.mp4`，**3.1 MB**，2160×1350，10 fps，无音轨 |
+| 源 | `ttft-v3.mov`，185.2 MB，3044×1900，可变帧率（平均约 37.1 fps），3:35 |
+| 现在 | `public/demo.mp4`，**9.76 MB**，3044×1900，15 fps，无音轨 |
 | 封面 | `public/demo-poster.jpg`（PDF 导出时代替视频） |
 
-重新压缩的命令：
+两遍编码控制在 10 MB 以内，保留分辨率，以 15 fps 换取更小体积：
 
 ```bash
-ffmpeg -i demo-raw.mp4 -vf "scale=2160:-2" -r 10 -c:v libx264 -preset slow -crf 20 \
-  -pix_fmt yuv420p -movflags +faststart -an public/demo.mp4
-ffmpeg -i public/demo.mp4 -ss 00:00:02 -vframes 1 -q:v 3 public/demo-poster.jpg
+ffmpeg -i ttft-v3.mov -map 0:v:0 -vf fps=15 -c:v libx264 -preset slow -b:v 350k \
+  -pass 1 -passlogfile /tmp/ttft-demo-pass -pix_fmt yuv420p -an -f null /dev/null
+ffmpeg -i ttft-v3.mov -map 0:v:0 -vf fps=15 -c:v libx264 -preset slow -b:v 350k \
+  -pass 2 -passlogfile /tmp/ttft-demo-pass \
+  -pix_fmt yuv420p -movflags +faststart -map_metadata -1 -an public/demo.mp4
+ffmpeg -ss 00:01:00 -i public/demo.mp4 -frames:v 1 -q:v 2 public/demo-poster.jpg
 ```
 
-`-an` 去音轨 —— 现场由讲者口述，而且**浏览器只允许静音视频自动播放**。
+现场由讲者口述，播放器保持静音以支持自动播放。
 
 页面上用的是 Slidev 内置的 `<SlidevVideo>`：`autoplay` 翻页即播、`autoreset="slide"` 离开回来从头播、
 `muted` 保证 autoplay 不被拦、`controls` 保留进度条、`print-poster` 供 PDF 导出。

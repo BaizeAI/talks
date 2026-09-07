@@ -929,6 +929,10 @@ glowSeed: 300
 
 # Follow One Request Until the Owner Changes
 
+<script setup>
+const demoPoster = `${import.meta.env.BASE_URL}demo-poster.jpg`
+</script>
+
 <div text-lg op-70 mt-1 mb-4>Signal → boundary → action → validation, in one continuous view</div>
 
 <div flex gap-6 items-start>
@@ -958,15 +962,15 @@ glowSeed: 300
     controls
     muted
     autoreset="slide"
-    poster="/demo-poster.jpg"
-    print-poster="/demo-poster.jpg"
+    :poster="demoPoster"
+    :print-poster="demoPoster"
     class="demo-vid"
   >
     <source src="/demo.mp4" type="video/mp4">
   </SlidevVideo>
   <div class="demo-cav">
     <div i-carbon:information style="color: #ffa35f; flex: none; margin-top: 2px" />
-    <span>Controlled replay on a demo environment · <b>1:24</b> · request-path signals are measured, scenario is scripted</span>
+    <span>Controlled replay on a demo environment · <b>3:35</b> · request-path signals are measured, scenario is scripted</span>
   </div>
 </div>
 
