@@ -125,21 +125,19 @@ KubeCon + CloudNativeCon China 2026 · 2026-09-09 16:15 · Mandarin Hall II · 3
 
 ## Demo 录屏（已就位）
 
-- 已从 0831 版 PPTX 里提取，压到 **3.1 MB**（2160×1350 / 10 fps / 静音），在 `public/demo.mp4`
-- 第 19 页已用 `<SlidevVideo autoplay muted autoreset="slide" controls>` 接好：翻到这页自动播放，离开再回来从头播
+- 已将 `ttft-v3.mov` 压到 **9.76 MB**（3044×1900 / 15 fps / 3:35 / 静音），在 `public/demo.mp4`
+- 第 16 页已用 `<SlidevVideo autoplay muted autoreset="slide" controls>` 接好：翻到这页自动播放，离开再回来从头播
 - 封面帧 `public/demo-poster.jpg`，PDF 导出时用它代替视频
 - 上台前仍要在**会场机器**上试播一次
-- 若播放失败：跳过，口述第 19 页的四个阶段，进 Cases 段。**不要在台上调试播放器**
+- 若播放失败：跳过，口述第 16 页的四个阶段，进 Cases 段。**不要在台上调试播放器**
 
-**⚠ 一个需要你确认的点**：录屏画面里明确出现了 **`2P × 4D`** 和 **`2P:4D → 3P:3D`**。
-这正是你之前要求不要上屏的 P:D 部署细节。它是 `[REPLAY]` 演示环境、不是生产配置，
-但如果介意，需要重新录一遍或把那两块面板挡掉。**现在是留着的。**
+录屏画面包含演示环境的 P:D 配比（例如 `3P × 2D`）与 localhost 地址；讲解时明确这些是受控回放的 demo 数据。
 
 ---
 
 ## 待补素材
 
-1. ~~Demo 录屏重压~~ —— 已完成（85 MB → 3.1 MB，已接入第 19 页）。仍需：会场机器试播 + 一份不依赖浏览器的本地备份
+1. ~~Demo 录屏重压~~ —— 已完成（185.2 MB → 9.76 MB，已接入第 16 页）。仍需：会场机器试播 + 一份不依赖浏览器的本地备份
 2. 第 21 页队头阻塞时间轴 —— 如能从 `request_queue_time` / `request_prefill_time` 直方图取一组真实对照更硬
 3. 第 22 页两条池子的占比 —— 如能从 `vllm:kv_cache_usage_perc` 与在途取回的 block 占用取真实对照更硬
 4. 第 26 页 Case 1 的 before/after —— 如能换成路由队列上线前后的分类 TTFT 实测更硬
