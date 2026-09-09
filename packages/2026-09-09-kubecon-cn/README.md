@@ -12,25 +12,24 @@ pnpm --filter 2026-09-09-kubecon-cn dev
 ```
 
 局域网分享：`npx slidev --remote --port 3033`，同事直接开 `http://<你的内网 IP>:3033/`。
-`#/overview/` 是缩略图总览，`#/presenter/` 是演讲者模式（含中文讲法注释，**只自己开**）。
+`#/overview/` 是缩略图总览，`#/presenter/` 是演讲者控制台。
 
 ## 结构
 
-正片 28 页（无 Backup）。前 20 页的内容与顺序对齐 Nicole 的 `kubecon2026-ttft-0831.pptx`；图像尽量沿用 PPT 原始素材，信息密集处保留更清晰的 Slidev 卡片表达。第 21 页以后按“机制 → 事故”展开：
+正片 27 页（无 Backup）。内容以 Nicole 的 `kubecon2026-ttft-0831.pptx` 为基础，图像尽量沿用 PPT 原始素材，信息密集处保留更清晰的 Slidev 卡片表达。第 14 页已合并诊断入口与完整 Playbook；第 17 页以后按“机制 → 验证 → 事故”展开：
 
 | 段落 | 页 | 内容 |
 |---|---|---|
 | Background | 3–7 | 告警现场 → 面板迷宫 → PD 生命周期 → 沿路径四次读收敛 |
-| Method | 8–14 | 从面板泛滥到动作路径 → 8 个入口信号 → 四步走 → 两信号买一页证据 |
-| Demo | 15–16 | 录屏 1:24：信号 → 边界 → 动作 → 验证 |
+| Method | 8–14 | 从面板泛滥到动作路径 → 8 个入口信号 → 四步走 → Diagnosis Playbook |
+| Demo | 15–16 | 信号 → 边界 → 动作 → 验证；完整视频 3:35 |
 | Inside the engine | 17–21 | 三个机制页 → 验证闭环 |
 | Cases | 22–24 | 两个一页式案例 |
-| 收尾 | 25–28 | Playbook → takeaways → 社区展望 → Q&A |
+| 收尾 | 25–27 | Takeaways → 社区展望 → Q&A |
 
-结构对齐 `kubecon2026 - Why Your TTFT Lies.pptx`（新版）。
+第 14 页 Diagnosis Playbook 覆盖 Entry / Admission / Prefill / Decode / KV handoff / GPU rank 六个分支，按 Signal combination → Confirm with → Candidate action 读表；证据确认后才做一次可回滚改动。
 
-- `slides.md` — 全部幻灯片，**中文讲法写在每页末尾的 HTML 注释里**（演讲者模式可见）
-- `speaker-notes.md` — 时间轴、超时预案、诚实口径、Backup 翻页索引、待补素材
+- `slides.md` — 全部 27 页幻灯片
 
 ## 可复现 Demo
 
@@ -70,7 +69,7 @@ make status
 ## 素材来源
 
 - 品牌配色、上海天际线、官方 lockup 取自 KubeCon China 2026 官方 PPT 模板
-- `public/ppt-align/` 是从原 PPT 提取、用于前 20 页内容对齐的图片素材
+- `public/ppt-align/` 是从原 PPT 提取、用于前半场的图片素材
 - `public/shots/` 下的 Grafana 截图取自生产环境与受控演示环境（第 16 页已在页面上标注哪些不是生产证据）
 - 指标名取自 llm-d EPP、vLLM、NIXL、DCGM 的原生 Prometheus 指标
 - **不上屏任何部署细节**：量化格式、副本数与 P:D 具体配比、并行度、内部代号、域名、集群 ID、主机名、IP
@@ -96,7 +95,7 @@ ffmpeg -i ttft-v3.mov -map 0:v:0 -vf fps=15 -c:v libx264 -preset slow -b:v 350k 
 ffmpeg -ss 00:01:00 -i public/demo.mp4 -frames:v 1 -q:v 2 public/demo-poster.jpg
 ```
 
-现场由讲者口述，播放器保持静音以支持自动播放。
+播放器保持静音以支持自动播放，完整视频时长为 3:35。
 
 页面上用的是 Slidev 内置的 `<SlidevVideo>`：`autoplay` 翻页即播、`autoreset="slide"` 离开回来从头播、
 `muted` 保证 autoplay 不被拦、`controls` 保留进度条、`print-poster` 供 PDF 导出。

@@ -44,6 +44,7 @@ fonts:
 <div absolute bottom-0 left-0 w-full style="height: 46%; z-index: -1; overflow: hidden; mask-image: linear-gradient(to top, black 30%, transparent)">
   <img src="/skyline-wide.png" style="opacity: 0.18; object-fit: cover; object-position: bottom; width: 100%; height: 100%">
 </div>
+
 ---
 layout: intro
 class: px-24
@@ -77,6 +78,7 @@ footer: false
 <div mt-12 text-center text-lg op-75>
   We run PD-disaggregated LLM inference in production — every trap in this talk is one we walked into
 </div>
+
 ---
 layout: section
 glowSeed: 120
@@ -85,6 +87,7 @@ glowSeed: 120
 # Background
 
 <div text-2xl op-70 mt-3>TTFT sent us into a maze</div>
+
 ---
 layout: default
 glowSeed: 88
@@ -164,6 +167,7 @@ glowSeed: 88
   line-height: 1.55;
 }
 </style>
+
 ---
 layout: default
 glowSeed: 142
@@ -234,6 +238,7 @@ glowSeed: 142
 .maze-question .q-box { position: relative; z-index: 1; margin: 18px; background: #06222ddf; backdrop-filter: blur(2px); }
 .maze-close { margin-top: 15px; padding: 11px 16px; border-left: 3px solid #ffc217; background: #ffc2170b; color: #ffc217; font-size: 15px; }
 </style>
+
 ---
 layout: default
 glowSeed: 210
@@ -305,6 +310,7 @@ glowSeed: 210
 .why-h { display: flex; align-items: center; gap: 7px; font-size: 15.5px; font-weight: 600; margin-bottom: 6px; }
 .why-d { font-size: 12.5px; line-height: 1.55; opacity: 0.85; }
 </style>
+
 ---
 layout: default
 glowSeed: 268
@@ -448,6 +454,7 @@ TTFT told us <b>when</b> users were waiting. The path told us <b>where</b>. It s
 .rp-tail-a { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 19px; opacity: 0.75; }
 .rp-tail-b { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 27px; font-weight: 700; color: #ff6b6b; }
 </style>
+
 ---
 layout: section
 glowSeed: 175
@@ -456,6 +463,7 @@ glowSeed: 175
 # Method
 
 <div text-2xl op-70 mt-3>Organize for decisions, reveal detail only when needed</div>
+
 ---
 layout: default
 glowSeed: 148
@@ -511,6 +519,7 @@ glowSeed: 148
   line-height: 1.55;
 }
 </style>
+
 ---
 layout: default
 glowSeed: 205
@@ -571,6 +580,7 @@ glowSeed: 205
   line-height: 1.55;
 }
 </style>
+
 ---
 layout: default
 glowSeed: 62
@@ -655,6 +665,7 @@ glowSeed: 62
   line-height: 1.6;
 }
 </style>
+
 ---
 layout: default
 glowSeed: 118
@@ -760,6 +771,7 @@ glowSeed: 118
   line-height: 1.55;
 }
 </style>
+
 ---
 layout: default
 glowSeed: 232
@@ -767,7 +779,7 @@ glowSeed: 232
 
 # Step 4 — Prefill, Handoff, or Decode?
 
-<div text-lg op-70 mt-1 mb-4>The first queue that rises owns the incident</div>
+<div text-lg op-70 mt-1 mb-4>Queue movement narrows the next investigation</div>
 
 <StageFlow
   :stages="[
@@ -799,10 +811,10 @@ glowSeed: 232
 
 <div class="s4-key">
   <div i-carbon:idea style="color: #ffc217; flex: none; margin-top: 3px" />
-  <div>Queues do not rise together — they rise <b>in order</b>. The stage whose queue moved <b>first</b> is the boundary; everything downstream of it is a symptom, and everything upstream is already ruled out.</div>
+  <div>Compare queues in the <b>same time window</b>. A rising queue identifies where requests wait. <b>Downstream backpressure can also create upstream waiting</b>, so stage-level evidence must confirm the cause.</div>
 </div>
 
-<div text-xs op-45 mt-3>schematic example · first rise selects the next page</div>
+<div text-xs op-45 mt-3>schematic example · queue patterns guide the next proof</div>
 
 <style>
 .s4-r {
@@ -830,90 +842,89 @@ glowSeed: 232
   line-height: 1.6;
 }
 </style>
+
 ---
 layout: default
 glowSeed: 84
 ---
 
-# Two Signals Should Buy You One Next Page
+# Diagnosis Playbook
 
-<div text-lg op-70 mt-1 mb-4>The arrow selects the next proof view — it does not prove root cause</div>
+<div text-lg op-70 mt-1 mb-4>Signal combinations select the next proof. Actions follow confirmation.</div>
 
-<div class="tsg">
-  <div class="ts-row">
-    <div class="ts-sig"><b>ready ↓</b> + <b>5xx ↑</b></div>
-    <div i-carbon:arrow-right class="ts-a" />
-    <div class="ts-dst" style="--c: #ff6b6b">SERVING / ENDPOINT</div>
-  </div>
-  <div class="ts-row">
-    <div class="ts-sig"><b>RPS ↑</b> + <b>RPM / TPM ↑</b></div>
-    <div i-carbon:arrow-right class="ts-a" />
-    <div class="ts-dst" style="--c: #ffa35f">ADMISSION / CAPACITY</div>
-  </div>
-  <div class="ts-row">
-    <div class="ts-sig"><b>TTFT ↑</b> + <b>P waiting ↑</b></div>
-    <div i-carbon:arrow-right class="ts-a" />
-    <div class="ts-dst" style="--c: #ffc217">PREFILL / SCHEDULER</div>
-  </div>
-  <div class="ts-row">
-    <div class="ts-sig"><b>TPOT ↑</b> + <b>D waiting ↑</b></div>
-    <div i-carbon:arrow-right class="ts-a" />
-    <div class="ts-dst" style="--c: #b0ddff">DECODE / HBM</div>
-  </div>
-  <div class="ts-row">
-    <div class="ts-sig">queues flat + <b>transfer p99 ↑</b></div>
-    <div i-carbon:arrow-right class="ts-a" />
-    <div class="ts-dst" style="--c: #ffa35f">NIXL / KV HANDOFF</div>
-  </div>
-  <div class="ts-row">
-    <div class="ts-sig"><b>tok/s ↓</b> + <b>rank skew ↑</b></div>
-    <div i-carbon:arrow-right class="ts-a" />
-    <div class="ts-dst" style="--c: #2ee59d">GPU / PLACEMENT</div>
-  </div>
-</div>
+<table class="playbook">
+  <thead>
+    <tr><th>Signal combination</th><th>Confirm with</th><th>Candidate action</th></tr>
+  </thead>
+  <tbody>
+    <tr style="--c: #ff6b6b">
+      <td><b>ready ↓</b> + <b>5xx / timeout ↑</b></td>
+      <td><strong>Serving / endpoint</strong><span>readiness, events, upstream logs</span></td>
+      <td>Restore healthy endpoints<span>Fix route if misconfigured</span></td>
+    </tr>
+    <tr style="--c: #ffa35f">
+      <td><b>RPS / input TPM ↑</b><span>plus queues / 429 ↑</span></td>
+      <td><strong>Admission / capacity</strong><span>quotas, load shape, service rate</span></td>
+      <td>Gate load if overloaded<span>Fix quota if misconfigured</span></td>
+    </tr>
+    <tr style="--c: #ffc217">
+      <td><b>TTFT ↑</b> + <b>P waiting ↑</b></td>
+      <td><strong>Prefill / scheduler</strong><span>queue vs. compute, wait reason</span></td>
+      <td>Test queue / scheduler changes<span>Add P only if capacity-bound</span></td>
+    </tr>
+    <tr style="--c: #b0ddff">
+      <td><b>TPOT ↑</b> + <b>D waiting ↑</b></td>
+      <td><strong>Decode / KV / collectives</strong><span>wait reason, preemptions, ranks</span></td>
+      <td>Cap concurrency if KV-limited<span>Add D only if capacity-bound</span></td>
+    </tr>
+    <tr style="--c: #ffa35f">
+      <td><b>transfer p99 ↑</b><span>or expected handoff fails</span></td>
+      <td><strong>NIXL / KV handoff</strong><span>payload size, errors, expiry</span></td>
+      <td>Fix confirmed transfer fault<span>Tune lease only if expiring</span></td>
+    </tr>
+    <tr style="--c: #2ee59d">
+      <td><b>tok/s ↓</b> + <b>rank skew ↑</b><span>same workload / TP group</span></td>
+      <td><strong>GPU / placement</strong><span>rank timing, DCGM, NCCL</span></td>
+      <td>Isolate confirmed bad GPU<span>or fix placement / collectives</span></td>
+    </tr>
+  </tbody>
+</table>
 
-<div class="ts-foot">
-  <div i-carbon:warning style="color: #ffc217; flex: none; margin-top: 3px" />
-  <div>Two signals, never one. A single metric moving is <b>ambiguous by construction</b> — it is the <b>combination</b> that is specific enough to pick a page. And the arrow only picks the page; the proof happens after you open it.</div>
+<div class="playbook-foot">
+  Act <b>only after proof</b>, with a validation gate and a rollback condition.
 </div>
 
 <style>
-.tsg { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 18px; }
-.ts-row {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 11px 15px;
-  border: 1px solid #ffffff1e;
-  border-radius: 11px;
-  background: #ffffff07;
+.playbook { width: 100%; table-layout: fixed; border-collapse: collapse; }
+.playbook th, .playbook td { text-align: left; padding: 5px 14px; vertical-align: middle; }
+.playbook th {
+  border-bottom: 1px solid #ffffff30;
+  background: #ffffff08;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffffaa;
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
-.ts-sig { flex: 1; font-size: 13px; opacity: 0.9; }
-.ts-sig b { color: #ffffffee; }
-.ts-a { color: #ffffff40; flex: none; }
-.ts-dst {
-  flex: none;
-  padding: 3px 11px;
-  border-radius: 7px;
-  border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
-  background: color-mix(in srgb, var(--c) 12%, transparent);
-  color: var(--c);
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-}
-.ts-foot {
-  display: flex;
-  gap: 10px;
-  margin-top: 16px;
-  padding: 13px 17px;
-  border: 1px solid #ffc21735;
-  border-radius: 11px;
-  background: #ffc2170a;
+.playbook th:nth-child(1) { width: 33%; }
+.playbook th:nth-child(2) { width: 34%; }
+.playbook th:nth-child(3) { width: 33%; }
+.playbook td { border-bottom: 1px solid #ffffff18; font-size: 14px; line-height: 1.35; }
+.playbook tbody tr:nth-child(even) { background: #ffffff04; }
+.playbook strong { display: block; color: var(--c); font-size: 14px; font-weight: 600; }
+.playbook td > span { display: block; margin-top: 2px; font-size: 12.5px; line-height: 1.3; color: #ffffffa8; }
+.playbook-foot {
+  margin-top: 12px;
+  padding: 8px 14px;
+  border-left: 3px solid #2ee59d;
+  background: #2ee59d0a;
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 </style>
+
 ---
 layout: section
 glowSeed: 260
@@ -922,6 +933,7 @@ glowSeed: 260
 # Demo
 
 <div text-2xl op-70 mt-3>Follow the first broken boundary</div>
+
 ---
 layout: default
 glowSeed: 300
@@ -1021,6 +1033,7 @@ const demoPoster = `${import.meta.env.BASE_URL}demo-poster.jpg`
   opacity: 0.62;
 }
 </style>
+
 ---
 layout: section
 glowSeed: 168
@@ -1029,6 +1042,7 @@ glowSeed: 168
 # Inside the engine
 
 <div text-2xl op-70 mt-3>Proof must change the action</div>
+
 ---
 layout: default
 glowSeed: 134
@@ -1193,6 +1207,7 @@ glowSeed: 134
   background: #ffffff14;
 }
 </style>
+
 ---
 layout: default
 glowSeed: 204
@@ -1376,6 +1391,7 @@ glowSeed: 204
 .bd.hot > b { color: #ffa35f; }
 .bd span { opacity: 0.86; }
 </style>
+
 ---
 layout: default
 glowSeed: 30
@@ -1508,6 +1524,7 @@ glowSeed: 30
   line-height: 1.55;
 }
 </style>
+
 ---
 layout: default
 glowSeed: 122
@@ -1547,6 +1564,7 @@ glowSeed: 122
   line-height: 1.6;
 }
 </style>
+
 ---
 layout: section
 glowSeed: 168
@@ -1559,6 +1577,7 @@ glowSeed: 168
 <div mt-8 text-lg op-60 style="max-width: 700px; line-height: 1.6">
   Observability should not stop at <i>what went wrong</i>. It should tell us <b>what to change</b>.
 </div>
+
 ---
 layout: default
 glowSeed: 214
@@ -1632,6 +1651,7 @@ glowSeed: 214
 .sg-s.bad { background: #ff6b6b1e; color: #ff8f8f; }
 .sg-s.key { background: #ffc2172a; color: #ffc217; }
 </style>
+
 ---
 layout: default
 glowSeed: 146
@@ -1717,101 +1737,7 @@ glowSeed: 146
   line-height: 1.55;
 }
 </style>
----
-layout: default
-glowSeed: 238
----
 
-# Signals → Proof → One Reversible Action
-
-<div text-lg op-70 mt-1 mb-4>The whole method on one page. Photograph this one.</div>
-
-<div class="pb">
-  <div class="pb-head">
-    <div>Layer</div><div>Signal combination</div><div>Prove next</div><div>Candidate action</div>
-  </div>
-  <div class="pb-row">
-    <div class="pb-l" style="--c: #ff6b6b">Entry</div>
-    <div class="pb-s">ready ↓ + 5xx / timeout ↑</div>
-    <div class="pb-p">endpoint · route · upstream log</div>
-    <div class="pb-a">restore route / endpoint<br><i>skip GPU tuning entirely</i></div>
-  </div>
-  <div class="pb-row">
-    <div class="pb-l" style="--c: #ffc217">Prefill</div>
-    <div class="pb-s">TTFT ↑ + P wait ↑<br><i>long prompts · P KV high</i></div>
-    <div class="pb-p">capacity reason · P token service rate</div>
-    <div class="pb-a">add P capacity / retune P:D<br><i>then benchmark scheduler</i></div>
-  </div>
-  <div class="pb-row">
-    <div class="pb-l" style="--c: #2ee59d">Decode</div>
-    <div class="pb-s">TPOT ↑ + D wait ↑<br><i>preemption · D KV high</i></div>
-    <div class="pb-p">output shape · D service · HBM</div>
-    <div class="pb-a">add D capacity<br><i>cap context / concurrency</i></div>
-  </div>
-  <div class="pb-row">
-    <div class="pb-l" style="--c: #b0ddff">Remote KV</div>
-    <div class="pb-s">hit ↑ <b>but</b> TTFT ↑</div>
-    <div class="pb-p">retrieve + to-GPU vs recompute</div>
-    <div class="pb-a">selective remote reuse<br><i>hot tier / recompute fallback</i></div>
-  </div>
-  <div class="pb-row">
-    <div class="pb-l" style="--c: #ffa35f">P → D</div>
-    <div class="pb-s">expected handoff<br><i>bytes = 0 or expiry ↑</i></div>
-    <div class="pb-p">connector · role · lease · routing</div>
-    <div class="pb-a">fix connector / lease<br><i>or routing</i></div>
-  </div>
-  <div class="pb-row">
-    <div class="pb-l" style="--c: #c9a7ff">Rank / fabric</div>
-    <div class="pb-s">tok/s ↓ + one GPU skew<br><i>XID / ECC or collective tail ↑</i></div>
-    <div class="pb-p">rank map · DCGM · NCCL topology</div>
-    <div class="pb-a">isolate bad GPU / node<br><i>or repair placement</i></div>
-  </div>
-</div>
-
-<div class="pb-foot">
-  Every row ends at a <b>reversible</b> action with a rollback condition — never at a dashboard.
-</div>
-
-<style>
-.pb { border: 1px solid #ffffff1e; border-radius: 12px; overflow: hidden; }
-.pb-head, .pb-row {
-  display: grid;
-  grid-template-columns: 118px 1.15fr 1fr 1.1fr;
-  gap: 12px;
-  padding: 6px 15px;
-  align-items: center;
-}
-.pb-head {
-  background: #ffffff0e;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  opacity: 0.7;
-  text-transform: uppercase;
-}
-.pb-row { border-top: 1px solid #ffffff12; font-size: 12.5px; line-height: 1.4; }
-.pb-row:nth-child(even) { background: #ffffff05; }
-.pb-l {
-  padding: 2px 10px;
-  border-radius: 6px;
-  border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
-  background: color-mix(in srgb, var(--c) 13%, transparent);
-  color: var(--c);
-  font-size: 12px;
-  font-weight: 700;
-  text-align: center;
-}
-.pb-s b { color: #ffc217; }
-.pb-s i, .pb-a i { font-style: normal; opacity: 0.6; font-size: 11.5px; }
-.pb-p { opacity: 0.82; }
-.pb-foot {
-  margin-top: 10px;
-  padding: 9px 16px;
-  border-left: 3px solid #2ee59d;
-  background: #2ee59d0a;
-  font-size: 14px;
-}
-</style>
 ---
 layout: default
 glowSeed: 108
@@ -1888,6 +1814,7 @@ glowSeed: 108
 }
 .kt-cap { font-size: 11.5px; opacity: 0.5; margin-top: 9px; text-align: center; }
 </style>
+
 ---
 layout: default
 glowSeed: 156
@@ -1957,6 +1884,7 @@ glowSeed: 156
   line-height: 1.6;
 }
 </style>
+
 ---
 layout: intro
 class: px-24

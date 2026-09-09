@@ -8,29 +8,28 @@ const orderedMarkers = [
   'Why Your TTFT Lies',
   'Nicole Li',
   '# Background',
-  "# It's 11 AM. TTFT P95 Just Went Red.",
+  '# At 11 AM, TTFT P95 Went Red',
   '# Dashboards Everywhere. Answers Nowhere.',
   '# Why TTFT Lies: The PD-Disaggregated Lifecycle',
-  '# The Request Path Narrowed It in Four Reads',
+  '# Four Reads Narrowed the Request Path',
   '# Method',
-  '# V1 — Locally Correct. No First Move.',
-  '<h1 class="iter-title">Three Iterations: From Component Views to Action Path</h1>',
-  '# V3 — Eight Entry Signals. Proof on Demand.',
-  '# Minimal = 4 Groups, 8 Entry Signals',
+  '# From Dashboard Sprawl to an Action Path',
+  '# Minimal = Eight Signals. One Next Proof.',
   '# Step 1 — Can We Accept Traffic at All?',
   '# Step 2–3 — Traffic and User SLO on One Timeline',
   '# Step 4 — Prefill, Handoff, or Decode?',
-  '# The Operator Homepage',
-  '# Two Signals Should Buy You One Next Page',
+  '# Diagnosis Playbook',
   '# Demo',
   '# Follow One Request Until the Owner Changes',
   '# Inside the engine',
-  '# Four Things Inflate a Prefill TTFT',
+  '# Three Things Inflate a Prefill TTFT',
+  '# KV Space Is a Shared Budget',
+  '# KV Transfer — Zero Bytes Looks Like a Fast Transfer',
 ]
 
 const slideCount = (slides.match(/^---$/gm) ?? []).length / 2
-if (slideCount !== 31)
-  throw new Error(`Expected 31 slides after restoring PPT slide 11, found ${slideCount}`)
+if (slideCount !== 27)
+  throw new Error(`Expected 27 slides after merging the playbook into slide 14, found ${slideCount}`)
 
 let cursor = -1
 for (const marker of orderedMarkers) {
@@ -41,13 +40,13 @@ for (const marker of orderedMarkers) {
 }
 
 for (const asset of [
-  'public/ppt-align/dashboard-maze.png',
-  'public/ppt-align/pd-lifecycle.png',
-  'public/ppt-align/dashboard-sprawl.png',
-  'public/ppt-align/iteration-evolution.png',
-  'public/ppt-align/v3-entry-signals.png',
+  'public/shots/ttft-incident.png',
+  'public/shots/sprawl-real.png',
+  'public/shots/pd-lifecycle.png',
+  'public/shots/action-path.png',
+  'public/demo-poster.jpg',
 ]) {
   await access(resolve(root, asset))
 }
 
-console.log('PPT alignment markers and source visuals are present.')
+console.log('Current first-20 slide order, 27-slide count, and source visuals are valid.')
